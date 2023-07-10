@@ -14,7 +14,7 @@ const items: MenuProps['items'] = [
     {
         key: '1',
         label: (
-            <NavLink to=''>
+            <NavLink to='/dang-ky'>
                 Đăng ký
             </NavLink>
         ),
@@ -22,7 +22,7 @@ const items: MenuProps['items'] = [
     {
         key: '2',
         label: (
-            <NavLink to=''>
+            <NavLink to='/dang-nhap'>
                 Đăng Nhập
                 <hr />
             </NavLink>
@@ -62,7 +62,7 @@ const Header = (props: Props) => {
 
     return (
         <>
-            <nav className=' fixed top-0  w-full  z-20 border-b'>
+            <nav className=' fixed top-0  w-full z-20 border-b'>
                 <div className=' container mx-auto px-2 sm:px-10 py-5 flex  justify-between items-center w-full'>
                     <NavLink
                         to=""
