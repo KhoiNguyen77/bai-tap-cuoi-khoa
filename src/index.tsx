@@ -10,6 +10,8 @@ import DanhSachPhong from './Pages/DanhSachPhong';
 import ChiTietPhong from './Pages/ChiTietPhong';
 import Profile from './Pages/Profile';
 import './index.css'
+import DangKy from './Pages/DangKy';
+import DangNhap from './Pages/DangNhap';
 
 
 export const history: History | any = createBrowserHistory();
@@ -22,12 +24,16 @@ root.render(
       <Routes>
         <Route path='' element={<HomeTemplate></HomeTemplate>}>
           <Route index element={<TrangChu></TrangChu>}></Route>
+
           <Route path='/phong-theo-vi-tri' element={<DanhSachPhong></DanhSachPhong>}>
             <Route path=':city-name'></Route>
           </Route>
           <Route path='/chi-tiet-phong' element={<ChiTietPhong></ChiTietPhong>}></Route>
           <Route path='/thong-tin-ca-nhan' element={<Profile></Profile>}></Route>
         </Route>
+
+        <Route path='/dang-ky' element={<DangKy></DangKy>}></Route>
+        <Route path='/dang-nhap' element={<DangNhap></DangNhap>}></Route>
       </Routes>
     </HistoryRouter>
   </Provider>

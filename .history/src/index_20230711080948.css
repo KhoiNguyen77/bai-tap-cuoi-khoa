@@ -1,5 +1,8 @@
 @tailwind base;
 @tailwind components;
+<<<<<<< HEAD
+@tailwind utilities;
+=======
 @tailwind utilities;
 
 
@@ -12,3 +15,4 @@
     text-decoration: none;
 
 }
+>>>>>>> 737fe5e42559333b8985d35fa777b6dfbb4d7bf0
