@@ -153,7 +153,7 @@ const Header = (props: Props) => {
                 {isOpen && (
                     <>
                         <div
-                            className="searchBar grid md:grid-cols-4 grid-cols-1 gap-4 grid-rows-1 mx-auto p-5 w-1/2 border-2 rounded-full text-center"
+                            className="searchBar grid md:grid-cols-4 grid-cols-1 grid-rows-1 mx-auto p-5 w-1/2 border-2 rounded-full text-center"
                             style={{
                                 transform: `translateY(${setHeight})`,
                                 transition: "all 1s",
@@ -164,34 +164,31 @@ const Header = (props: Props) => {
                                 <Input
                                     placeholder=""
                                     bordered={true}
-                                    className="inline-block p-3 w-full mx-auto"
+                                    className="inline-block p-0 w-full mx-auto"
                                 />
                             </div>
                             <div className="select">
                                 <p className="ml-3">Nhận phòng</p>
                                 <DatePicker
-                                    bordered={true}
+                                    bordered={false}
                                     placeholder="dd/MM/YYYY"
                                     format={"dd/MM/YYYY"}
-                                    className="inline-block p-3 w-full mx-auto"
                                 />
                             </div>
                             <div className="select">
                                 <p className="ml-3">Trả phòng</p>
                                 <DatePicker
                                     placeholder="dd/MM/YYYY"
-                                    bordered={true}
+                                    bordered={false}
                                     format={"dd/MM/YYYY"}
-                                    className="inline-block p-3 w-full mx-auto"
                                 />
                             </div>
                             <div className="select">
                                 <p>Khách</p>
                                 <Input
                                     placeholder="Basic usage"
-                                    bordered={true}
+                                    bordered={false}
                                     defaultValue={0}
-                                    className="inline-block p-3 w-full mx-auto"
                                 />
                             </div>
                         </div>

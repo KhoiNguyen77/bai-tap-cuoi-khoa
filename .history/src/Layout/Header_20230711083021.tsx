@@ -180,7 +180,7 @@ const Header = (props: Props) => {
                                 <p className="ml-3">Trả phòng</p>
                                 <DatePicker
                                     placeholder="dd/MM/YYYY"
-                                    bordered={true}
+                                    bordered={false}
                                     format={"dd/MM/YYYY"}
                                     className="inline-block p-3 w-full mx-auto"
                                 />
@@ -189,7 +189,7 @@ const Header = (props: Props) => {
                                 <p>Khách</p>
                                 <Input
                                     placeholder="Basic usage"
-                                    bordered={true}
+                                    bordered={false}
                                     defaultValue={0}
                                     className="inline-block p-3 w-full mx-auto"
                                 />
