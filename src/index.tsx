@@ -24,7 +24,7 @@ root.render(
       <Routes>
         <Route path='' element={<HomeTemplate></HomeTemplate>}>
           <Route index element={<TrangChu></TrangChu>}></Route>
-
+          <Route path='/profile' element={<Profile></Profile>}></Route>
           <Route path='/phong-theo-vi-tri' element={<DanhSachPhong></DanhSachPhong>}>
             <Route path=':city-name'></Route>
           </Route>

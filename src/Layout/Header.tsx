@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import cn from "classnames";
 import { NavLink } from "react-router-dom";
 //antdesign
 import {
@@ -57,19 +58,12 @@ const Header = (props: Props) => {
         <>
             <nav className="top-0  w-full z-20 border-b shadow-lg">
                 <div
-                    className=" container mx-auto px-2 sm:px-10 py-5 flex  justify-between items-center w-full cursor-pointer"
-                    onClick={() => {
-                        setOpen((isOpen = !isOpen));
-                        if (heightState === "0") {
-                            setHeight("100%");
-                        } else {
-                            setHeight("0");
-                        }
-                    }}
+                    className=" container mx-auto px-2 sm:px-10 py-5 flex flex-row justify-center  items-center w-full  md:justify-between"
+
                 >
                     <NavLink
                         to=""
-                        className="hidden sm:flex items-center text-rose-500 z-20 py-3 "
+                        className="hidden sm:flex items-start text-rose-500 z-20 py-3 w-96"
                     >
                         <div className="hidden md:block">
                             <svg
@@ -88,15 +82,26 @@ const Header = (props: Props) => {
                         </div>
                     </NavLink>
 
-                    <div className="flex flex-wrap items-center justify-center relative z-20">
+                    <div className="flex flex-wrap items-center justify-around relative z-20 cursor-pointer shrink-0  "
+                        onClick={() => {
+                            setOpen((isOpen = !isOpen));
+                            if (heightState === "0") {
+                                setHeight("100%");
+
+
+                            } else {
+                                setHeight("0");
+                            }
+                        }}
+                    >
                         {!isOpen && (
-                            <div className="rounded-full shadow-lg p-2 flex flex-wrap justify-center ">
+                            <div className="rounded-full shadow-lg p-2 flex flex-wrap justify-center items-center   ">
                                 <div className="font-medium border-r pr-2">Địa điểm bất kỳ</div>
                                 <div className="font-medium border-r pr-2 pl-2">
                                     Tuần bất kỳ
                                 </div>
                                 <div className="font-normal pr-2 pl-2">Thêm khách</div>
-                                <div className="inline-flex w-8 h-8 justify-center items-center bg-rose-500 rounded-full text-white font-bold">
+                                <div className="inline-flex flex-wrap w-8 h-8 justify-center items-center bg-rose-500 rounded-full text-white font-bold">
                                     <SearchOutlined
                                         style={{
                                             display: "block",
@@ -111,7 +116,7 @@ const Header = (props: Props) => {
                             </div>
                         )}
                         {isOpen && (
-                            <div className="grid md:grid-cols-3 grid-rows-1 text-center grid-cols-1">
+                            <div className=" grid md:grid-cols-3 grid-rows-1 text-center grid-cols-1">
                                 <p>Chỗ ở</p>
                                 <p>Trải nghiệm</p>
                                 <p>Trải nghiệm trực tuyến</p>
@@ -119,7 +124,7 @@ const Header = (props: Props) => {
                         )}
                     </div>
                     <div
-                        className="hidden sm:flex flex-initial mx-5"
+                        className="hidden sm:flex flex-initial  mx-5  "
 
                     >
                         <NavLink to="/">
@@ -153,10 +158,10 @@ const Header = (props: Props) => {
                 {isOpen && (
                     <>
                         <div
-                            className="searchBar grid md:grid-cols-4 grid-cols-1 gap-4 grid-rows-1 mx-auto p-5 w-1/2 border-2 rounded-full text-center"
+                            className="transition-all duration-300 searchBar grid md:grid-cols-4 grid-cols-1 gap-4 grid-rows-1 mx-auto p-5 w-1/2 border-2 rounded-full text-center"
                             style={{
                                 transform: `translateY(${setHeight})`,
-                                transition: "all 1s",
+
                             }}
                         >
                             <div className="select">
@@ -197,7 +202,11 @@ const Header = (props: Props) => {
                         </div>
                     </>
                 )}
-            </nav>
+
+
+
+
+            </nav >
         </>
     );
 };
