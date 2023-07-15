@@ -8,12 +8,10 @@ const DanhSachPhong = (props: Props) => {
     <>
       <div className="container grid xs:grid-cols-1 lg:grid-cols-2 gap-10 justify-center">
         <div className="room-list">
-          <div className="filter flex justify-between my-3 items-center">
+          <div className="filter">
             <p className="bold text-2xl">Hơn 1000 căn hộ</p>
             <div className="filter-button">
-              <button className="p-3 rounded-lg border-2 border border-solid border-black hover:shadow-xl">
-                <i className="fa fa-filter"></i> Bộ lọc
-              </button>
+              <button>Bộ lọc</button>
             </div>
           </div>
           <div className="grid lg:grid-cols-2 sm:grid-cols-1 justify-center gap-10 w-full">

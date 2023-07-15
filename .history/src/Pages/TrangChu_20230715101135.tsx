@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/swiper-react.mjs";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -31,10 +31,7 @@ const TrangChu = (props: Props) => {
         </Swiper> */}
       </div>
       <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 justify-center gap-10">
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
+        <NavLink to={"/"} className="room cursor-pointer">
           <div className="room_image mb-4">
             <img
               className="rounded-lg"
@@ -60,10 +57,7 @@ const TrangChu = (props: Props) => {
             <strong className="text-black">$109</strong> đêm
           </div>
         </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
+        <NavLink to={"/"} className="room cursor-pointer">
           <div className="room_image mb-4">
             <img
               className="rounded-lg"
@@ -89,10 +83,7 @@ const TrangChu = (props: Props) => {
             <strong className="text-black">$109</strong> đêm
           </div>
         </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
+        <NavLink to={"/"} className="room cursor-pointer">
           <div className="room_image mb-4">
             <img
               className="rounded-lg"
@@ -118,10 +109,7 @@ const TrangChu = (props: Props) => {
             <strong className="text-black">$109</strong> đêm
           </div>
         </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
+        <NavLink to={"/"} className="room cursor-pointer">
           <div className="room_image mb-4">
             <img
               className="rounded-lg"
@@ -147,10 +135,7 @@ const TrangChu = (props: Props) => {
             <strong className="text-black">$109</strong> đêm
           </div>
         </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
+        <NavLink to={"/"} className="room cursor-pointer">
           <div className="room_image mb-4">
             <img
               className="rounded-lg"
@@ -176,10 +161,7 @@ const TrangChu = (props: Props) => {
             <strong className="text-black">$109</strong> đêm
           </div>
         </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
+        <NavLink to={"/"} className="room cursor-pointer">
           <div className="room_image mb-4">
             <img
               className="rounded-lg"
@@ -205,10 +187,7 @@ const TrangChu = (props: Props) => {
             <strong className="text-black">$109</strong> đêm
           </div>
         </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
+        <NavLink to={"/"} className="room cursor-pointer">
           <div className="room_image mb-4">
             <img
               className="rounded-lg"
@@ -234,10 +213,7 @@ const TrangChu = (props: Props) => {
             <strong className="text-black">$109</strong> đêm
           </div>
         </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
+        <NavLink to={"/"} className="room cursor-pointer">
           <div className="room_image mb-4">
             <img
               className="rounded-lg"

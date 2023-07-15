@@ -11,7 +11,7 @@ const DanhSachPhong = (props: Props) => {
           <div className="filter flex justify-between my-3 items-center">
             <p className="bold text-2xl">Hơn 1000 căn hộ</p>
             <div className="filter-button">
-              <button className="p-3 rounded-lg border-2 border border-solid border-black hover:shadow-xl">
+              <button className="p-3 rounded-lg border-2 border border-solid border-black">
                 <i className="fa fa-filter"></i> Bộ lọc
               </button>
             </div>

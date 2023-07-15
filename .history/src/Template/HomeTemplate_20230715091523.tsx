@@ -11,7 +11,7 @@ const HomeTemplate = (props: Props) => {
             <div style={{ minHeight: '' }}>
                 <Header></Header>
             </div>
-            <div className="content container mx-auto py-10" >
+            <div className="content" >
                 <Outlet></Outlet>
             </div>
             <Footer></Footer>

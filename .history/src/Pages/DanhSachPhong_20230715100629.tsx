@@ -8,19 +8,8 @@ const DanhSachPhong = (props: Props) => {
     <>
       <div className="container grid xs:grid-cols-1 lg:grid-cols-2 gap-10 justify-center">
         <div className="room-list">
-          <div className="filter flex justify-between my-3 items-center">
-            <p className="bold text-2xl">Hơn 1000 căn hộ</p>
-            <div className="filter-button">
-              <button className="p-3 rounded-lg border-2 border border-solid border-black hover:shadow-xl">
-                <i className="fa fa-filter"></i> Bộ lọc
-              </button>
-            </div>
-          </div>
-          <div className="grid lg:grid-cols-2 sm:grid-cols-1 justify-center gap-10 w-full">
-            <NavLink
-              to={"/"}
-              className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-            >
+          <div className="grid lg:grid-cols-2 sm:grid-cols-1 justify-center gap-10">
+            <NavLink to={"/"} className="room cursor-pointer">
               <div className="room_image mb-4">
                 <img
                   className="rounded-lg"
@@ -46,10 +35,7 @@ const DanhSachPhong = (props: Props) => {
                 <strong className="text-black">$109</strong> đêm
               </div>
             </NavLink>
-            <NavLink
-              to={"/"}
-              className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-            >
+            <NavLink to={"/"} className="room cursor-pointer">
               <div className="room_image mb-4">
                 <img
                   className="rounded-lg"
@@ -75,10 +61,7 @@ const DanhSachPhong = (props: Props) => {
                 <strong className="text-black">$109</strong> đêm
               </div>
             </NavLink>
-            <NavLink
-              to={"/"}
-              className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-            >
+            <NavLink to={"/"} className="room cursor-pointer">
               <div className="room_image mb-4">
                 <img
                   className="rounded-lg"
@@ -104,10 +87,7 @@ const DanhSachPhong = (props: Props) => {
                 <strong className="text-black">$109</strong> đêm
               </div>
             </NavLink>
-            <NavLink
-              to={"/"}
-              className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-            >
+            <NavLink to={"/"} className="room cursor-pointer">
               <div className="room_image mb-4">
                 <img
                   className="rounded-lg"
@@ -133,10 +113,7 @@ const DanhSachPhong = (props: Props) => {
                 <strong className="text-black">$109</strong> đêm
               </div>
             </NavLink>
-            <NavLink
-              to={"/"}
-              className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-            >
+            <NavLink to={"/"} className="room cursor-pointer">
               <div className="room_image mb-4">
                 <img
                   className="rounded-lg"
@@ -162,10 +139,7 @@ const DanhSachPhong = (props: Props) => {
                 <strong className="text-black">$109</strong> đêm
               </div>
             </NavLink>
-            <NavLink
-              to={"/"}
-              className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-            >
+            <NavLink to={"/"} className="room cursor-pointer">
               <div className="room_image mb-4">
                 <img
                   className="rounded-lg"
@@ -191,10 +165,7 @@ const DanhSachPhong = (props: Props) => {
                 <strong className="text-black">$109</strong> đêm
               </div>
             </NavLink>
-            <NavLink
-              to={"/"}
-              className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-            >
+            <NavLink to={"/"} className="room cursor-pointer">
               <div className="room_image mb-4">
                 <img
                   className="rounded-lg"
@@ -220,10 +191,7 @@ const DanhSachPhong = (props: Props) => {
                 <strong className="text-black">$109</strong> đêm
               </div>
             </NavLink>
-            <NavLink
-              to={"/"}
-              className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-            >
+            <NavLink to={"/"} className="room cursor-pointer">
               <div className="room_image mb-4">
                 <img
                   className="rounded-lg"
@@ -251,13 +219,13 @@ const DanhSachPhong = (props: Props) => {
             </NavLink>
           </div>
         </div>
-        <div className="map w-full xs:hidden md:block relative">
+        <div className="map w-full sm:hidden lg:block">
           <iframe
-            className="rounded-lg sticky center top-0 h-screen"
+          className="fixed"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.047123210905!2d106.62131717469636!3d10.730848989415135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752df4c0029863%3A0x68d7cdf238c5387f!2sChung%20c%C6%B0%20Diamond%20Riverside%20Q8!5e0!3m2!1svi!2s!4v1689389776320!5m2!1svi!2s"
-            width={"100%"}
+            width={'100%'}
             height={700}
-            style={{ border: 0 }}
+            style={{ border: 0}}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
