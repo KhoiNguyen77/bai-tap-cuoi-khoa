@@ -12,6 +12,7 @@ import Profile from './Pages/Profile';
 import './index.css'
 import DangKy from './Pages/DangKy';
 import DangNhap from './Pages/DangNhap';
+import QuanLyDatPhong from './Pages/QuanLyDatPhong';
 
 
 export const history: History | any = createBrowserHistory();
@@ -25,6 +26,7 @@ root.render(
         <Route path='' element={<HomeTemplate></HomeTemplate>}>
           <Route index element={<TrangChu></TrangChu>}></Route>
           <Route path='/profile' element={<Profile></Profile>}></Route>
+          <Route path='/quan-ly-dat-phong' element={<QuanLyDatPhong></QuanLyDatPhong>}></Route>
           <Route path='/phong-theo-vi-tri' element={<DanhSachPhong></DanhSachPhong>}>
             <Route path=':city-name'></Route>
           </Route>

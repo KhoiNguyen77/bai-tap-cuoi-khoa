@@ -110,7 +110,7 @@ const Header = (props: Props) => {
                             </div>
                         )}
                         {isOpen && (
-                            <div className=" grid md:grid-cols-3 grid-rows-1 text-center grid-cols-1">
+                            <div className=" grid lg:grid-cols-3  text-center grid-cols-1">
                                 <p>Chỗ ở</p>
                                 <p>Trải nghiệm</p>
                                 <p>Trải nghiệm trực tuyến</p>
@@ -122,14 +122,14 @@ const Header = (props: Props) => {
 
                     >
                         <NavLink to="/">
-                            <p className="hidden md:flex p-3 rounded-full hover:bg-gray-200">
+                            <p className="hidden lg:flex p-3 rounded-full hover:bg-gray-200">
                                 Trở Thành Chủ Nhà{" "}
                             </p>
                         </NavLink>
                         <NavLink to="/">
                             <ChromeOutlined
                                 style={{ fontSize: "32px" }}
-                                className="hidden md:flex  justify-start cursor-pointer mx-2  p-3 rounded-full hover:bg-gray-200"
+                                className="hidden lg:flex  justify-start cursor-pointer mx-2  p-3 rounded-full hover:bg-gray-200"
                             />
                         </NavLink>
 
@@ -152,7 +152,7 @@ const Header = (props: Props) => {
                 {isOpen && (
                     <>
                         <div
-                            className="transition-all duration-300 searchBar grid md:grid-cols-4 grid-cols-1 gap-4 grid-rows-1 mx-auto p-5 w-1/2 border-2 rounded-full text-center"
+                            className="transition-all duration-300 searchBar grid lg:grid-cols-4 grid-cols-1 gap-4 grid-rows-1 mx-auto p-5 w-1/2 border-2 rounded-full text-center"
                             style={{
                                 transform: `translateY(${setHeight})`,
 
