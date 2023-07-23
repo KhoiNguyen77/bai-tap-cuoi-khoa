@@ -79,10 +79,10 @@ const ChiTietPhong = (props: Props) => {
           </div>
         </div>
       </div>
-      <div className="detail my-10 mx-auto">
-        <div className="grid grid-cols-4 gap-10 ">
+      <div className="detail my-10 mx-auto relative ">
+        <div className="grid grid-cols-5 gap-10 border-b border-solid border-gray-400">
           <div className="left lg:col-span-3 col-span-4">
-            <div className="grid grid-rows-1 grid-cols-3 gap-10 border-b border-solid border-gray-400 py-7">
+            <div className="grid grid-rows-1 grid-cols-3 gap-10 border-b border-solid border-gray-400 p-3">
               <div className="col-span-3 md:col-span-2">
                 <p className="font-bold text-lg lg:text-3xl text-center md:text-start">
                   Toàn bộ căn hộ. Chủ nhà Shungwon
@@ -177,7 +177,7 @@ const ChiTietPhong = (props: Props) => {
                 Hiển thị thêm
               </p>
             </div>
-            <div className="service border-b border-solid border-gray-400 pt-4 pb-10">
+            <div className="service  pt-4 pb-10">
               <p className="font-bold text-2xl">Nơi này có những gì cho bạn</p>
               <div className="grid grid-cols-2">
                 <div className="service_left col-span-1">
@@ -214,7 +214,224 @@ const ChiTietPhong = (props: Props) => {
               </button>
             </div>
           </div>
-          <div className="right"></div>
+          <div className="right lg:col-span-2 col-span-4 h-screen sticky top-28">
+            <div className="order border border-solid p-5 border-gray-300 rounded-lg py-7 shadow-xl">
+              <div className="price flex justify-between items-center">
+                <div className="left">
+                  <p className="font-bold">$ 690000 đêm</p>
+                </div>
+                <div className="right flex">
+                  <p className="mr-5 underline text-sm md:text-base">
+                    81 đánh giá
+                  </p>
+                  <p className="mr-5 text-sm md:text-base">
+                    <i className="fa fa-star mr-1"></i>4
+                  </p>
+                </div>
+              </div>
+              <div className="book mt-4">
+                <div className="grid grid-cols-1 grid-rows-2 border border-gray-300 border-solid rounded-lg">
+                  <div className="rows-span-1 grid col-span-2 grid-cols-2 border-b border-solid border-gray-300 text-center">
+                    <div className="grid-cols-1 p-3 border-e border-gray-300 border-solid hover:bg-gray-100 duration-150">
+                      <button>
+                        <p>NHẬN PHÒNG</p>
+                        <p>23-07-2023</p>
+                      </button>
+                    </div>
+                    <div className="grid-cols-1 p-3 hover:bg-gray-100 duration-150">
+                      <button className="">
+                        <p>TRẢ PHÒNG</p>
+                        <p>23-07-2023</p>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="row-span-1 col-span-2">
+                    <div className="">
+                      <div className="grid-cols-2 p-3">
+                        <p>KHÁCH</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row-span-1 col-span-2 mx-auto w-full mt-5 text-center">
+                  <button className="p-5 block w-full rounded-lg text-white bg-pink-600 text-xl hover:bg-pink-700 duration-150">
+                    Đặt phòng
+                  </button>
+                  <p className="mt-3 text-gray-300">Bạn vẫn chưa bị trừ tiền</p>
+                </div>
+              </div>
+              <div className="total flex justify-between items-center mt-3">
+                <div className="left">
+                  <p className="underline">$ 690000 x 0 đêm</p>
+                </div>
+                <div className="right flex">
+                  <p className="mr-5 text-sm md:text-base">0 $</p>
+                </div>
+              </div>
+              <div className="total flex justify-between items-center mt-3 border-b border-solid border-gray-300 pb-5">
+                <div className="left">
+                  <p className="underline">Phí dịch vụ</p>
+                </div>
+                <div className="right flex">
+                  <p className="mr-5 text-sm md:text-base">0 $</p>
+                </div>
+              </div>
+              <div className="total flex justify-between items-center mt-3">
+                <div className="left">
+                  <p className="font-bold">Tổng trước thuế</p>
+                </div>
+                <div className="right flex">
+                  <p className="mr-5 text-sm md:text-base font-bold">0 $</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="comment grid grid-cols-2 gap-x-20 gap-y-5 py-2">
+          <div className="score col-span-2">
+            <p className="font-bold text-lg">
+              <i className="fa fa-star mr-1"></i>4. 19 đánh giá
+            </p>
+          </div>
+          <div className="left col-span-2 lg:col-span-1">
+            <div className="rating flex justify-between items-center">
+              <p>Giao tiếp</p>
+              <div className="w-1/2 flex justify-between items-center">
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div
+                    className="bg-gray-800 h-1 rounded-full"
+                    style={{ width: "100%" }}
+                  ></div>
+                </div>
+                <div className="ml-4">5,0</div>
+              </div>
+            </div>
+            <div className="rating flex justify-between items-center">
+              <p>Nhận phòng</p>
+              <div className="w-1/2 flex justify-between items-center">
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div
+                    className="bg-gray-800 h-1 rounded-full"
+                    style={{ width: "100%" }}
+                  ></div>
+                </div>
+                <div className="ml-4">5,0</div>
+              </div>
+            </div>
+            <div className="rating flex justify-between items-center">
+              <p>Mức đô sạch sẽ</p>
+              <div className="w-1/2 flex justify-between items-center">
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div
+                    className="bg-gray-800 h-1 rounded-full"
+                    style={{ width: "100%" }}
+                  ></div>
+                </div>
+                <div className="ml-4">5,0</div>
+              </div>
+            </div>
+          </div>
+          <div className="right col-span-2 lg:col-span-1">
+            <div className="rating flex justify-between items-center">
+              <p>Độ chính xác</p>
+              <div className="w-1/2 flex justify-between items-center">
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div
+                    className="bg-gray-800 h-1 rounded-full"
+                    style={{ width: "100%" }}
+                  ></div>
+                </div>
+                <div className="ml-4">5,0</div>
+              </div>
+            </div>
+            <div className="rating flex justify-between items-center">
+              <p>Vị trí</p>
+              <div className="w-1/2 flex justify-between items-center">
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div
+                    className="bg-gray-800 h-1 rounded-full"
+                    style={{ width: "100%" }}
+                  ></div>
+                </div>
+                <div className="ml-4">5,0</div>
+              </div>
+            </div>{" "}
+            <div className="rating flex justify-between items-center">
+              <p>Giá trị</p>
+              <div className="w-1/2 flex justify-between items-center">
+                <div className="w-full bg-gray-200 rounded-full h-1">
+                  <div
+                    className="bg-gray-800 h-1 rounded-full"
+                    style={{ width: "100%" }}
+                  ></div>
+                </div>
+                <div className="ml-4">5,0</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="comment-section grid grid-cols-2 gap-x-52 col-span-2">
+            <p className="font-bold text-2xl col-span-2">Bình luận</p>
+            <div className="comment col-span-2 border-b border-solid border-gray-200 py-5">
+              <div className="user flex items-center gap-20">
+                <div className="user-avatar">
+                  <img
+                    src="https://airbnb.cybersoft.edu.vn/public/temp/1663923449254_halong-bay-vietnam-from-above-gettyimages.jpg "
+                    alt=""
+                    className="rounded-full overflow-hidden w-14 h-14 inline-block"
+                  />
+                </div>
+                <div className="user-comment">
+                  <p className="font-bold text-xl">Do Duy Thinh</p>
+                  <p className="text-base text-gray-400 italic">
+                    15 tháng 07 năm 2022
+                  </p>
+                  <p>Phòng đẹp</p>
+                </div>
+              </div>
+            </div>
+            <div className="comment col-span-2 border-b border-solid border-gray-200 py-5">
+              <div className="user flex items-center gap-20">
+                <div className="user-avatar">
+                  <img
+                    src="https://airbnb.cybersoft.edu.vn/public/temp/1663923449254_halong-bay-vietnam-from-above-gettyimages.jpg "
+                    alt=""
+                    className="rounded-full overflow-hidden w-14 h-14 inline-block"
+                  />
+                </div>
+                <div className="user-comment">
+                  <p className="font-bold text-xl">Do Duy Thinh</p>
+                  <p className="text-base text-gray-400 italic">
+                    15 tháng 07 năm 2022
+                  </p>
+                  <p>Phòng đẹp</p>
+                </div>
+              </div>
+            </div>
+            <div className="comment col-span-2 border-b border-solid border-gray-200 py-5">
+              <div className="user flex items-center gap-20">
+                <div className="user-avatar">
+                  <img
+                    src="https://airbnb.cybersoft.edu.vn/public/temp/1663923449254_halong-bay-vietnam-from-above-gettyimages.jpg "
+                    alt=""
+                    className="rounded-full overflow-hidden w-14 h-14 inline-block"
+                  />
+                </div>
+                <div className="user-comment">
+                  <p className="font-bold text-xl">Do Duy Thinh</p>
+                  <p className="text-base text-gray-400 italic">
+                    15 tháng 07 năm 2022
+                  </p>
+                  <p>Phòng đẹp</p>
+                </div>
+              </div>
+            </div>
+            <div className="show-all mt-10 col-span-2">
+              <button className="p-3 border border-solid rounded-lg w-64 py-3 hover:bg-gray-200 font-bold duration-300">
+                Hiển thị tất cả bình luận
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
