@@ -8,7 +8,7 @@ type Props = {}
 const HomeTemplate = (props: Props) => {
     return (
         <div >
-            <div style={{ minHeight: '' }}>
+            <div style={{ minHeight: '' }} className='shadow-md'>
                 <Header></Header>
             </div>
             <div className="content container mx-auto py-10" >
