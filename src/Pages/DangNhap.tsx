@@ -1,9 +1,37 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { useDispatch } from 'react-redux'
+import { dispatchType } from '../Reducer/configStore'
+import { LoginActionApi } from '../Reducer/userReducer'
+
+
+export interface formValue {
+  email: string,
+  password: string
+}
 
 type Props = {}
 
 const DangNhap = (props: Props) => {
+  const dispatch: dispatchType = useDispatch();
+  const frm = useFormik<formValue>({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    validationSchema: yup.object().shape({
+      email: yup.string().required('email không được để trống!').email('sai định dạng email'),
+      password: yup.string().required('password không để trống !')
+    }),
+    onSubmit: (value: formValue) => {
+      // dua ve redux call api
+      const actionAsync = LoginActionApi(value);
+      dispatch(actionAsync);
+    }
+
+  })
   return (
     <div className="w-screen h-screen relative" style={{
       backgroundImage: `url('../images/logo_login.jpg')`,
@@ -29,33 +57,37 @@ const DangNhap = (props: Props) => {
                 <h1 className="text-red-400 block text-3xl font-extrabold font-title px-2 ">
                   Đăng Nhập</h1>
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="username"> Email
-                </label>
-                <input className="shadow-sm appearance-none border border-gray-400 rounded w-full py-4 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-indigo-300" id="username" type="text" placeholder="user@example.com" />
-              </div>
-              <div className="mb-6">
-                <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="username"> Password </label>
-                <input className="shadow-sm appearance-none border border-gray-400 rounded w-full py-4 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-indigo-300" id="password" type="password" placeholder="***************" />
-              </div>
-              <div className="mb-6">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="text-center sm:text-left">
-                    <label>
-                      <input type="checkbox" className="mr-2" />
-                      <span className="text-sm font-medium text-gray-700 ">Remember me</span>
-                    </label>
-                  </div>
-                  <div className="text-center sm:text-right">
-                    <a href="#" className="text-red-300 font-medium text-sm duration-200 transition-colors hover:text-red-800">Quên mật khẩu ?</a>
+              <form onSubmit={frm.handleSubmit}>
+                <div className="mb-4">
+                  <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="username"> Email
+                  </label>
+                  <input className="shadow-sm appearance-none border border-gray-400 rounded w-full py-4 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-indigo-300" id="email" name="email" placeholder="user@example.com" onChange={frm.handleChange} />
+                  <p className='text-red-400'>{frm.errors.email}</p>
+                </div>
+                <div className="mb-6">
+                  <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="username"> Password </label>
+                  <input className="shadow-sm appearance-none border border-gray-400 rounded w-full py-4 px-3 text-gray-700 text-sm leading-tight focus:outline-none focus:border-indigo-300" id="password" type="password" placeholder="**********" onChange={frm.handleChange} />
+                  <p className='text-red-400'>{frm.errors.password}</p>
+                </div>
+                <div className="mb-6">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="text-center sm:text-left">
+                      <label>
+                        <input type="checkbox" className="mr-2" />
+                        <span className="text-sm font-medium text-gray-700 ">Remember me</span>
+                      </label>
+                    </div>
+                    <div className="text-center sm:text-right">
+                      <a href="#" className="text-red-300 font-medium text-sm duration-200 transition-colors hover:text-red-800">Quên mật khẩu ?</a>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="mb-6">
-                <button type="button" className="bg-red-500 hover:bg-red-800 shadow-lg text-white font-semibold text-sm py-3 px-0 rounded text-center w-full hover:bg-tertiary duration-200 transition-all">
-                  Đăng nhập
-                </button>
-              </div>
+                <div className="mb-6">
+                  <button type="submit" className="bg-red-500 hover:bg-red-800 shadow-lg text-white font-semibold text-sm py-3 px-0 rounded text-center w-full hover:bg-tertiary duration-200 transition-all">
+                    Đăng nhập
+                  </button>
+                </div>
+              </form>
               <div className="grid sm:grid-cols-3 gap-0 mb-6">
                 <hr className="mt-3 hidden sm:block border-gray-400" />
 

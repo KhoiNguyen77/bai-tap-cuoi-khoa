@@ -3,10 +3,10 @@ import { history } from '../index'
 
 
 //setup hằng số
-export const DOMAIN = 'https://shop.cyberlearn.vn';
+export const DOMAIN = 'https://airbnbnew.cybersoft.edu.vn';
 export const TOKEN = 'accessToken';
 export const USER_LOGIN = 'userLogin';
-export const TOKEN_CYBERSOFT = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA0MyIsIkhldEhhblN0cmluZyI6IjA0LzExLzIwMjMiLCJIZXRIYW5UaW1lIjoiMTY5OTA1NjAwMDAwMCIsIm5iZiI6MTY2OTQ4MjAwMCwiZXhwIjoxNjk5MjAzNjAwfQ.7A1g8RqPPK_ttr9NYitsWT7Cbe11nz4qye-QxZ_b8fk`
+export const TOKEN_CYBERSOFT = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA0NSIsIkhldEhhblN0cmluZyI6IjA4LzEyLzIwMjMiLCJIZXRIYW5UaW1lIjoiMTcwMTk5MzYwMDAwMCIsIm5iZiI6MTY3MjA3NDAwMCwiZXhwIjoxNzAyMTQxMjAwfQ.1MKFgiR_REeXZ8RKBhPFQLyitVek8kDJ3u1JPaCB1MU`
 
 export const { getStoreJson, setStoreJson, getStore, setStore } = {
     getStoreJson: (name: string): any => {
@@ -15,6 +15,7 @@ export const { getStoreJson, setStoreJson, getStore, setStore } = {
             return JSON.parse(strResult);
         }
         return undefined;
+
     },
     setStoreJson: (name: string, data: any): void => {
         const strJSON = JSON.stringify(data);
@@ -47,16 +48,24 @@ httpNonAuth.interceptors.request.use((config: any) => {
 }, err => {
     return Promise.reject(err)
 });
-http.interceptors.request.use((config: any) => {
-    config.headers = { ...config.headers }
-    let token = getStoreJson(USER_LOGIN)?.accessToken;
-    config.headers.Authorization = `Bearer ${token}`;
-    config.headers.tokenCybersoft = `TOKEN_CYBERSOFT`;
-    return config
+// http.interceptors.request.use((config: any) => {
+//     config.headers = { ...config.headers }
+//     let token = getStoreJson(USER_LOGIN)?.accessToken;
+//     config.headers.Authorization = `Bearer ${token}`;
+//     config.headers.tokenCybersoft = `TOKEN_CYBERSOFT`;
+//     return config
+// }, err => {
+//     return Promise.reject(err)
+// });
+http.interceptors.request.use((request: any) => {
+    request.headers = { ...request.headers }
+    if (getStoreJson(USER_LOGIN)) {
+        request.headers = { ...request.headers, Authorization: `Bearer ` + getStoreJson(USER_LOGIN).accessToken }
+    }
+    return request
 }, err => {
     return Promise.reject(err)
-});
-
+})
 
 //Cấu hình cho response (kết quả trả về từ api)
 http.interceptors.response.use((res) => {
@@ -87,7 +96,7 @@ http.interceptors.response.use((res) => {
     // }
     if (err.response?.status === 403) {
         alert('Không đủ quyền truy cập vào trang này !');
-        history.push('/admin/login');
+        history.push('/Pages/DangNhap');
     }
     return Promise.reject(err);
 });

@@ -1,9 +1,50 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-
+import { dispatchType } from '../Reducer/configStore';
+import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { signUp } from '../Reducer/userReducer';
 type Props = {}
-
+export interface formRegister {
+  id: number,
+  name: string,
+  email: string,
+  password: string,
+  phone: string,
+  birthday: string,
+  gender: boolean,
+  role: string,
+}
 const DangKy = (props: Props) => {
+  const dispatch: dispatchType = useDispatch();
+  const registerMik = useFormik<formRegister>({
+    initialValues: {
+      id: 0,
+      name: '',
+      email: '',
+      password: '',
+      phone: '',
+      birthday: '',
+      gender: true,
+      role: '',
+    },
+    onSubmit: (values: formRegister) => {
+      const actionSignUp = signUp(values);
+      dispatch(actionSignUp);
+      console.log(actionSignUp)
+
+    },
+    validationSchema: yup.object().shape({
+      email: yup.string().required("Không đẻ được trống email!").email("Email không đúng !"),
+      password: yup.string().required("Không để được trống mật khẩu!").min(5, "Mât khẩu phải ít nhất 5 ký tự").max(15, "Mật khẩu không được dài quá 8 ký tự"),
+      name: yup.string().required("Không để trống họ tên"),
+      birthday: yup.string().required(" Không để trống ngày sinh"),
+      gender: yup.string().required("Vui lòng chọn giới tính !"),
+      phone: yup.string().required("").max(10, "Số điện thoại phải có 10 số"),
+      role: yup.string().required("Không để trống địa chỉ"),
+    })
+  })
   return (
     <div>
       <div className="w-screen h-screen relative" style={{
@@ -31,68 +72,76 @@ const DangKy = (props: Props) => {
                 <h1 className="text-red-400  text-3xl font-extrabold font-title ">
                   Đăng Ký</h1>
               </div>
-              <div className="container mx-auto px-10 grid sm:grid-cols-2 gap-4 mt-9">
-                <div className="mb-4 w-full">
-                  <div className='mb-3'>
-                    <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="username"> Tên người dùng
-                    </label>
-                    <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="username" type="text" placeholder="Điền tên người dùng" />
+              <form onSubmit={registerMik.handleSubmit}>
+                <div className="container mx-auto px-10 grid sm:grid-cols-2 gap-4 mt-9">
+
+                  <div className="mb-4 w-full">
+                    <div className='mb-3'>
+                      <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="username"> Tên người dùng
+                      </label>
+                      <span className='text-red-500'>{registerMik.errors.name}</span>
+                      <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="name" name='name' type="text" placeholder="Điền tên người dùng" onChange={registerMik.handleChange} value={registerMik.values.name} />
+                    </div>
+                    <div className='mb-3'>
+                      <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="sdt"> Số điện thoại </label>
+                      <span className='text-red-500 '>{registerMik.errors.phone}</span>
+                      <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="phone" type="number" placeholder="Điền số điện thoại" onChange={registerMik.handleChange} value={registerMik.values.phone} />
+                    </div>
+                    <div className='mb-3'>
+                      <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="address"> Địa chỉ </label>
+                      <span className='text-red-500'>{registerMik.errors.role}</span>
+                      <input className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
+                     dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="role" type='text' name='role' placeholder="Địa chỉ" onChange={registerMik.handleChange} value={registerMik.values.role} />
+                    </div>
+                    <div className='mb-3'>
+                      <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="gender"> giới tính </label>
+                      <span className='text-red-500'>{registerMik.errors.gender}</span>
+                      <select className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' id="gender"
+                        onChange={registerMik.handleChange} //defaultValue={registerMik.values.gender}
+                      >
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                      </select>
+                    </div>
                   </div>
-                  <div className='mb-3'>
-                    <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="username"> Số điện thoại </label>
-                    <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="phone" type="number" placeholder="Điền số điện thoại" />
-                  </div>
-                  <div className='mb-3'>
-                    <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="address"> Địa chỉ </label>
-                    <input className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
-                     dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="address" type='text' placeholder="Địa chỉ" />
-                  </div>
-                  <div className='mb-3'>
-                    <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="gender"> giới tính </label>
-                    <select className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' id="">
-                      <option value="1">Nam</option>
-                      <option value="2 ">Nữ</option>
-                    </select>
+                  <div className="mb-6 w-full ml-2">
+                    <div className="mb-3">
+                      <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="email"> Email </label>
+                      <span className='text-red-500'>{registerMik.errors.email}</span>
+                      <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="email" placeholder="Email" onChange={registerMik.handleChange} value={registerMik.values.email} />
+                    </div>
+                    <div className="mb-3">
+                      <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="password"> Mật Khẩu  </label>
+                      <span className='text-red-500'>{registerMik.errors.password}</span>
+                      <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="password" type="password" placeholder="***********" onChange={registerMik.handleChange} value={registerMik.values.password} />
+                    </div>
+                    <div className="mb-3">
+                      <label
+                        htmlFor="birthday"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      >
+                        Ngày Sinh
+                      </label>
+                      <input
+                        type="date"
+                        id="birthday"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className="mb-6 w-full ml-2">
-                  <div className="mb-3">
-                    <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="email"> Email </label>
-                    <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="password" type="password" placeholder="Email" />
-                  </div>
-                  <div className="mb-3">
-                    <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="password"> Mật Khẩu  </label>
-                    <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="password" type="password" placeholder="***********" />
-                  </div>
-                  <div className="mb-3">
-                    <label
-                      htmlFor="birthday"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                      Ngày Sinh
-                    </label>
-                    <input
-                      type="date"
-                      id="birthday"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      required
-                    />
-                  </div>
+                <div className="mb-6 text-center">
+                  <button type="submit" className="bg-red-500 hover:bg-red-800 shadow-lg text-white font-semibold text-sm py-3 px-0 rounded-full text-center w-80 hover:bg-tertiary duration-200 transition-all">
+                    Đăng Ký
+                  </button>
                 </div>
-
-              </div>
-
-
-              <div className="mb-6">
-                <button type="button" className="bg-red-500 hover:bg-red-800 shadow-lg text-white font-semibold text-sm py-3 px-0 rounded-full text-center w-full hover:bg-tertiary duration-200 transition-all">
-                  Đăng Ký
-                </button>
-              </div>
+              </form>
               <div className=" mb-6 text-center">
 
                 <NavLink to="/dang-nhap" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
