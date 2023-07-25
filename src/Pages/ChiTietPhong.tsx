@@ -1,20 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { RootState } from "../Reducer/configStore";
+import { getRoomDetailAPI } from "../Reducer/locationReducer";
+import { Action } from "@reduxjs/toolkit";
 
 type Props = {};
 
 const ChiTietPhong = (props: Props) => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { roomDetail } = useSelector(
+    (state: RootState) => state.locationReducer
+  );
+  const getRoomDetail = async () => {
+    const action: any = await getRoomDetailAPI(id);
+    dispatch(action);
+  };
+  useEffect(() => {
+    getRoomDetail();
+  }, [id]);
+  console.log(roomDetail?.moTa.split(/\n/));
+
   return (
     <div className="container mx-auto w-full p-5">
       <div className="name">
         <p className="text-4xl font-bold text-center lg:text-start">
-          <i className="fa fa-hotel"></i> Khách sạn Palace
+          <i className="fa fa-hotel"></i> {roomDetail?.tenPhong}
         </p>
         <div className="review grid lg:grid-cols-2 grid-cols-1 my-3">
           <div className="left-review flex lg:justify-start justify-center between w-full text-center items-center">
             <p className="mr-5 text-xs lg:text-base">
-              <i className="fa fa-star mr-1"></i>4
+              <i className="fa fa-star mr-1"></i>
+              {(Math.random() * 5).toFixed(2)}
             </p>
-            <p className="mr-5 underline text-sm md:text-base">81 đánh giá</p>
+            <p className="mr-5 underline text-sm md:text-base">
+              {Math.floor(Math.random() * 100) + 1} đánh giá
+            </p>
             <p className="mr-5 text-sm lg:text-base">
               <i className="fa fa-award mr-1"></i>
               Chủ nhà siêu cấp
@@ -37,43 +59,11 @@ const ChiTietPhong = (props: Props) => {
       </div>
       <div className="pic">
         <div className=" grid grid-rows-1 md:grid-cols-4 gap-10">
-          <div className="col-span-2 row-span-2">
+          <div className="col-span-4 row-span-2">
             <img
               className="rounded-lg h-full"
               width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="col-span-1 row-span-1 hidden md:block">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="col-span-1 row-span-1 hidden md:block">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="col-span-1 row-span-1 hidden md:block">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="col-span-1 row-span-1 hidden md:block">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
+              src={roomDetail?.hinhAnh}
               alt=""
             />
           </div>
@@ -82,15 +72,21 @@ const ChiTietPhong = (props: Props) => {
       <div className="detail my-10 mx-auto relative ">
         <div className="grid grid-cols-5 gap-10 border-b border-solid border-gray-400">
           <div className="left lg:col-span-3 col-span-4">
-            <div className="grid grid-rows-1 grid-cols-3 gap-10 border-b border-solid border-gray-400 p-3">
+            <div className="grid grid-rows-1 grid-cols-3 gap-10 border-b border-solid border-gray-400 py-3">
               <div className="col-span-3 md:col-span-2">
                 <p className="font-bold text-lg lg:text-3xl text-center md:text-start">
-                  Toàn bộ căn hộ. Chủ nhà Shungwon
+                  Toàn bộ căn hộ.
                 </p>
                 <div className="room-detail flex justify-center md:justify-start">
-                  <p className="mr-3 text-gray-500 text-md">3 khách</p>
-                  <p className="mr-3 text-gray-500 text-md">5 phòng ngủ</p>
-                  <p className="mr-3 text-gray-500 text-md">5 phòng tắm</p>
+                  <p className="mr-3 text-gray-500 text-md">
+                    {roomDetail?.khach} khách
+                  </p>
+                  <p className="mr-3 text-gray-500 text-md">
+                    {roomDetail?.phongNgu} phòng ngủ
+                  </p>
+                  <p className="mr-3 text-gray-500 text-md">
+                    {roomDetail?.phongTam} phòng tắm
+                  </p>
                 </div>
               </div>
               <div className="col-span-3 md:col-span-1">
@@ -104,7 +100,25 @@ const ChiTietPhong = (props: Props) => {
               </div>
             </div>
             <div className="cons  border-b border-solid border-gray-400 py-2">
-              <div className="first-con flex justify-start items-center gap-5 my-3">
+              {roomDetail?.moTa &&
+                roomDetail?.moTa
+                  .split(/\n/)
+                  .map((line: string, index: number) => {
+                    if (index == 0 || index % 2 == 0) {
+                      return (
+                        <p className="lg:text-xl text-sm font-bold mt-2">
+                          {line}
+                        </p>
+                      );
+                    } else {
+                      return (
+                        <p className="text-gray-400 w-3/4 lg:text-base text-sm text-justify mt-2">
+                          {line}
+                        </p>
+                      );
+                    }
+                  })}
+              {/* <div className="first-con flex justify-start items-center gap-5 my-3">
                 <i className="fa fa-award lg:text-2xl text-xl"></i>
                 <div className="owner">
                   <p className="lg:text-xl text-sm font-bold">
@@ -135,7 +149,7 @@ const ChiTietPhong = (props: Props) => {
                     Miễn phí hủy trong 48 giờ.
                   </p>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="benefit border-b border-solid border-gray-400 py-4">
               <p className="py-2">
@@ -181,32 +195,62 @@ const ChiTietPhong = (props: Props) => {
               <p className="font-bold text-2xl">Nơi này có những gì cho bạn</p>
               <div className="grid grid-cols-2">
                 <div className="service_left col-span-1">
-                  <p className="py-3 text-lg">
-                    <i className="fa fa-utensils text-xl mr-5"></i>
-                    Bếp
-                  </p>
-                  <p className="py-3 text-lg">
-                    <i className="fa fa-door-closed text-xl mr-5"></i>
-                    Thang máy
-                  </p>
-                  <p className="py-3 text-lg">
-                    <i className="fa fa-temperature-high text-xl mr-5"></i>
-                    Hệ thống sưởi
-                  </p>
+                  {roomDetail?.bep && (
+                    <p className="py-3 text-lg">
+                      <i className="fa fa-utensils text-xl mr-5"></i>
+                      Bếp
+                    </p>
+                  )}
+                  {roomDetail?.mayGiat && (
+                    <p className="py-3 text-lg">
+                      <i className="fa fa-water text-xl mr-4"></i>
+                      Máy giặt
+                    </p>
+                  )}
+                  {roomDetail?.banLa && (
+                    <p className="py-3 text-lg">
+                      <i className="fa fa-fire-alt text-xl mr-6"></i>
+                      Bàn là
+                    </p>
+                  )}
+                  {roomDetail?.dieuHoa && (
+                    <p className="py-3 text-lg">
+                      <i className="fa fa-snowflake text-xl mr-5"></i>
+                      Điều hoà
+                    </p>
+                  )}
+                  {roomDetail?.banUi && (
+                    <p className="py-3 text-lg">
+                      <i className="fab fa-hotjar text-xl mr-5"></i>
+                      Bàn ủi
+                    </p>
+                  )}
                 </div>
                 <div className="service_right col-span-1">
-                  <p className="py-3 text-lg">
-                    <i className="fa fa-wifi text-xl mr-5"></i>
-                    Wifi
-                  </p>
-                  <p className="py-3 text-lg">
-                    <i className="fa fa-tv text-xl mr-5"></i>
-                    Tivi
-                  </p>
-                  <p className="py-3 text-lg">
-                    <i className="fa fa-umbrella-beach text-xl mr-5"></i>
-                    Hồ bơi
-                  </p>
+                  {roomDetail?.wifi && (
+                    <p className="py-3 text-lg">
+                      <i className="fa fa-wifi text-xl mr-5"></i>
+                      Wifi
+                    </p>
+                  )}
+                  {roomDetail?.tivi && (
+                    <p className="py-3 text-lg">
+                      <i className="fa fa-tv text-xl mr-5"></i>
+                      Tivi
+                    </p>
+                  )}
+                  {roomDetail?.hoBoi && (
+                    <p className="py-3 text-lg">
+                      <i className="fa fa-umbrella-beach text-xl mr-6"></i>
+                      Hồ bơi
+                    </p>
+                  )}
+                  {roomDetail?.doXe && (
+                    <p className="py-3 text-lg">
+                      <i className="fa fa-parking text-xl mr-7"></i>
+                      Đỗ xe
+                    </p>
+                  )}
                 </div>
               </div>
               <button className="p-3 border border-solid rounded-lg w-64 py-3 hover:bg-gray-200 font-bold duration-300">
@@ -218,14 +262,15 @@ const ChiTietPhong = (props: Props) => {
             <div className="order border border-solid p-5 border-gray-300 rounded-lg py-7 shadow-xl">
               <div className="price flex justify-between items-center">
                 <div className="left">
-                  <p className="font-bold">$ 690000 đêm</p>
+                  <p className="font-bold">{roomDetail?.giaTien}$ / đêm</p>
                 </div>
                 <div className="right flex">
                   <p className="mr-5 underline text-sm md:text-base">
-                    81 đánh giá
+                    {Math.floor(Math.random() * 100)} đánh giá
                   </p>
                   <p className="mr-5 text-sm md:text-base">
-                    <i className="fa fa-star mr-1"></i>4
+                    <i className="fa fa-star mr-1"></i>{" "}
+                    {(Math.random() * 5).toFixed(2)}
                   </p>
                 </div>
               </div>
@@ -262,7 +307,7 @@ const ChiTietPhong = (props: Props) => {
               </div>
               <div className="total flex justify-between items-center mt-3">
                 <div className="left">
-                  <p className="underline">$ 690000 x 0 đêm</p>
+                  <p className="underline">{roomDetail?.giaTien}$ x 0 đêm</p>
                 </div>
                 <div className="right flex">
                   <p className="mr-5 text-sm md:text-base">0 $</p>

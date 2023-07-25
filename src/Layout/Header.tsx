@@ -53,27 +53,32 @@ const items: MenuProps["items"] = [
 const profile = getStoreJson(USER_PROFILE);
 const getProfileLink = () => {
   if (profile == null) {
-    return null
+    return null;
   } else {
-    return <Avatar
-      size={{
-        xs: 24,
-        sm: 32,
-        md: 40,
-        lg: 64,
-        xl: 70,
-        xxl: 75,
-      }}
-      src={profile.avatar}
-    />
-
+    return (
+      <Avatar
+        size={{
+          xs: 24,
+          sm: 32,
+          md: 40,
+          lg: 64,
+          xl: 70,
+          xxl: 75,
+        }}
+        src={profile.avatar}
+      />
+    );
   }
-}
+};
 const Header = (props: Props) => {
   const { location } = useSelector((state: any) => state.locationReducer);
   const options: any = [];
   location.map((item: Location, index: number) => {
-    options.push({ label: item.tenViTri, value: item.tenViTri, key: item.id });
+    options.push({
+      label: item.tenViTri + ", " + item.tinhThanh,
+      value: item.tenViTri + ", " + item.tinhThanh,
+      key: item.id,
+    });
   });
   let [isOpen, setOpen] = useState(false);
   let [heightState, setHeight] = useState("0");
@@ -174,7 +179,7 @@ const Header = (props: Props) => {
 
         {isOpen && (
           <>
-            <div
+            <form
               className="transition-all duration-300 searchBar grid lg:grid-cols-4 grid-cols-1 gap-4 grid-rows-1 mx-auto p-5 w-1/2 border-2 rounded-full text-center"
               style={{
                 transform: `translateY(${setHeight})`,
@@ -190,7 +195,6 @@ const Header = (props: Props) => {
                   filterOption={true}
                   onSelect={(value, option) => {
                     console.log(option.key);
-
                   }}
                 >
                   <TextArea style={{ height: 30 }} />
@@ -227,7 +231,7 @@ const Header = (props: Props) => {
                   className="inline-block p-3 w-full mx-auto"
                 />
               </div>
-            </div>
+            </form>
           </>
         )}
       </nav>

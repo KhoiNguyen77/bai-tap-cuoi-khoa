@@ -38,7 +38,7 @@ root.render(
             <Route path=":city-name"></Route>
           </Route>
           <Route
-            path="/chi-tiet-phong"
+            path="/chi-tiet-phong/:id"
             element={<ChiTietPhong></ChiTietPhong>}
           ></Route>
           <Route

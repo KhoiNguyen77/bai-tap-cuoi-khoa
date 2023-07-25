@@ -6,18 +6,31 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { useDispatch } from "react-redux";
-import { getLocationAPI } from "../Reducer/locationReducer";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  LocationState,
+  Room,
+  getLocationAPI,
+  getRoomAPI,
+} from "../Reducer/locationReducer";
+import { RootState } from "../Reducer/configStore";
 type Props = {};
 const TrangChu = (props: Props) => {
+  const { rooms } = useSelector((state: RootState) => state.locationReducer);
   const dispatch = useDispatch();
   const getLocation = async () => {
     const action: any = await getLocationAPI();
     dispatch(action);
   };
+  const getRoom = async () => {
+    const action: any = await getRoomAPI();
+    dispatch(action);
+  };
   useEffect(() => {
     getLocation();
-  });
+    getRoom();
+  }, []);
+
   return (
     <div className="container mx-auto">
       <div className="swiper w-full mx-auto mb-5">
@@ -131,238 +144,42 @@ const TrangChu = (props: Props) => {
         </Swiper>
       </div>
       <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 justify-center gap-10">
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
-          <div className="room_image mb-4">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="name flex justify-between  font-bold text-lg">
-            <p>Khách sạn Hồng Hào</p>
-            <p>
-              <i className="fa fa-star"></i>
-              2.85
-            </p>
-          </div>
-          <div className="distance text-gray-500 text-lg">
-            <p>5120 Km</p>
-          </div>
-          <div className="date text-gray-500 text-lg">
-            Ngày 24 - Ngày 16 tháng 2
-          </div>
-          <div className="price text-gray-500 text-lg">
-            <strong className="text-black">$109</strong> đêm
-          </div>
-        </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
-          <div className="room_image mb-4">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="name flex justify-between  font-bold text-lg">
-            <p>Khách sạn Hồng Hào</p>
-            <p>
-              <i className="fa fa-star"></i>
-              2.85
-            </p>
-          </div>
-          <div className="distance text-gray-500 text-lg">
-            <p>5120 Km</p>
-          </div>
-          <div className="date text-gray-500 text-lg">
-            Ngày 24 - Ngày 16 tháng 2
-          </div>
-          <div className="price text-gray-500 text-lg">
-            <strong className="text-black">$109</strong> đêm
-          </div>
-        </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
-          <div className="room_image mb-4">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="name flex justify-between  font-bold text-lg">
-            <p>Khách sạn Hồng Hào</p>
-            <p>
-              <i className="fa fa-star"></i>
-              2.85
-            </p>
-          </div>
-          <div className="distance text-gray-500 text-lg">
-            <p>5120 Km</p>
-          </div>
-          <div className="date text-gray-500 text-lg">
-            Ngày 24 - Ngày 16 tháng 2
-          </div>
-          <div className="price text-gray-500 text-lg">
-            <strong className="text-black">$109</strong> đêm
-          </div>
-        </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
-          <div className="room_image mb-4">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="name flex justify-between  font-bold text-lg">
-            <p>Khách sạn Hồng Hào</p>
-            <p>
-              <i className="fa fa-star"></i>
-              2.85
-            </p>
-          </div>
-          <div className="distance text-gray-500 text-lg">
-            <p>5120 Km</p>
-          </div>
-          <div className="date text-gray-500 text-lg">
-            Ngày 24 - Ngày 16 tháng 2
-          </div>
-          <div className="price text-gray-500 text-lg">
-            <strong className="text-black">$109</strong> đêm
-          </div>
-        </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
-          <div className="room_image mb-4">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="name flex justify-between  font-bold text-lg">
-            <p>Khách sạn Hồng Hào</p>
-            <p>
-              <i className="fa fa-star"></i>
-              2.85
-            </p>
-          </div>
-          <div className="distance text-gray-500 text-lg">
-            <p>5120 Km</p>
-          </div>
-          <div className="date text-gray-500 text-lg">
-            Ngày 24 - Ngày 16 tháng 2
-          </div>
-          <div className="price text-gray-500 text-lg">
-            <strong className="text-black">$109</strong> đêm
-          </div>
-        </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
-          <div className="room_image mb-4">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="name flex justify-between  font-bold text-lg">
-            <p>Khách sạn Hồng Hào</p>
-            <p>
-              <i className="fa fa-star"></i>
-              2.85
-            </p>
-          </div>
-          <div className="distance text-gray-500 text-lg">
-            <p>5120 Km</p>
-          </div>
-          <div className="date text-gray-500 text-lg">
-            Ngày 24 - Ngày 16 tháng 2
-          </div>
-          <div className="price text-gray-500 text-lg">
-            <strong className="text-black">$109</strong> đêm
-          </div>
-        </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
-          <div className="room_image mb-4">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="name flex justify-between  font-bold text-lg">
-            <p>Khách sạn Hồng Hào</p>
-            <p>
-              <i className="fa fa-star"></i>
-              2.85
-            </p>
-          </div>
-          <div className="distance text-gray-500 text-lg">
-            <p>5120 Km</p>
-          </div>
-          <div className="date text-gray-500 text-lg">
-            Ngày 24 - Ngày 16 tháng 2
-          </div>
-          <div className="price text-gray-500 text-lg">
-            <strong className="text-black">$109</strong> đêm
-          </div>
-        </NavLink>
-        <NavLink
-          to={"/"}
-          className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
-        >
-          <div className="room_image mb-4">
-            <img
-              className="rounded-lg"
-              width={"100%"}
-              src="https://airbnb.cybersoft.edu.vn/public/images/room/1658134435797_put-together-a-perfect-guest-room-1976987-hero-223e3e8f697e4b13b62ad4fe898d492d.jpg"
-              alt=""
-            />
-          </div>
-          <div className="name flex justify-between  font-bold text-lg">
-            <p>Khách sạn Hồng Hào</p>
-            <p>
-              <i className="fa fa-star"></i>
-              2.85
-            </p>
-          </div>
-          <div className="distance text-gray-500 text-lg">
-            <p>5120 Km</p>
-          </div>
-          <div className="date text-gray-500 text-lg">
-            Ngày 24 - Ngày 16 tháng 2
-          </div>
-          <div className="price text-gray-500 text-lg">
-            <strong className="text-black">$109</strong> đêm
-          </div>
-        </NavLink>
+        {rooms.length > 0 &&
+          rooms.map((item: Room, index: number) => {
+            return (
+              <NavLink
+                to={`/chi-tiet-phong/${item.id}`}
+                className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
+                key={index}
+              >
+                <div className="room_image mb-4">
+                  <img
+                    className="rounded-lg"
+                    width={"100%"}
+                    src={item.hinhAnh}
+                    alt=""
+                  />
+                </div>
+                <div className="name grid grid-cols-4 font-bold text-sm gap-5">
+                  <p className="col-span-3">{item.tenPhong}</p>
+                  <p>
+                    <i className="fa fa-star"></i>
+                    {(Math.random()*5).toFixed(2)}
+                  </p>
+                </div>
+                <div className="distance text-gray-500 text-sm">
+                  <p>{Math.floor(Math.random() * 10)} km</p>
+                </div>
+                <div className="date text-gray-500 text-sm">
+                  Ngày {Math.floor(Math.random() * 30)+1} - Ngày{" "}
+                  {Math.floor(Math.random() * 30)} tháng 2
+                </div>
+                <div className="price text-gray-500 text-lg">
+                  <strong className="text-black">{item.giaTien}$</strong>/đêm
+                </div>
+              </NavLink>
+            );
+          })}
       </div>
     </div>
   );
