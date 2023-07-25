@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { signUp } from '../Reducer/userReducer';
+import { Radio } from 'antd';
 type Props = {}
 export interface formRegister {
   id: number,
@@ -29,10 +30,23 @@ const DangKy = (props: Props) => {
       gender: true,
       role: '',
     },
-    onSubmit: (values: formRegister) => {
+
+    onSubmit: (values: formRegister, { resetForm }) => {
+
       const actionSignUp = signUp(values);
       dispatch(actionSignUp);
       console.log(actionSignUp)
+      // resetForm({
+      //   id: 0, 
+      //   name: '',
+      //   email: '',
+      //   password: '',
+      //   phone: '',
+      //   birthday: '',
+      //   gender: true,
+      //   role: '',
+      // })
+
 
     },
     validationSchema: yup.object().shape({
@@ -72,6 +86,7 @@ const DangKy = (props: Props) => {
                 <h1 className="text-red-400  text-3xl font-extrabold font-title ">
                   Đăng Ký</h1>
               </div>
+
               <form onSubmit={registerMik.handleSubmit}>
                 <div className="container mx-auto px-10 grid sm:grid-cols-2 gap-4 mt-9">
 
@@ -98,13 +113,11 @@ const DangKy = (props: Props) => {
                     <div className='mb-3'>
                       <label className="block text-gray-400 text-sm font-medium mb-2" htmlFor="gender"> giới tính </label>
                       <span className='text-red-500'>{registerMik.errors.gender}</span>
-                      <select className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
-                     dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' id="gender"
-                        onChange={registerMik.handleChange} //defaultValue={registerMik.values.gender}
-                      >
-                        <option value="true">Nam</option>
-                        <option value="false">Nữ</option>
-                      </select>
+
+                      <Radio.Group id='gender' name='gender' defaultValue={registerMik.values.gender} onChange={registerMik.handleChange}>
+                        <Radio value={true} id='male'>Male</Radio>
+                        <Radio value={false} id='female'>Female</Radio>
+                      </Radio.Group>
                     </div>
                   </div>
                   <div className="mb-6 w-full ml-2">
@@ -132,6 +145,7 @@ const DangKy = (props: Props) => {
                         id="birthday"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         required
+                        onChange={registerMik.handleChange} value={registerMik.values.birthday}
                       />
                     </div>
                   </div>

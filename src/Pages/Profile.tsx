@@ -1,9 +1,36 @@
 import React from 'react'
-import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react'
+import { NavLink, useParams } from "react-router-dom";
+import { RootState, dispatchType } from '../Reducer/configStore';
+import { getProfileApi } from '../Reducer/userReducer';
+
 
 type Props = {}
+export interface formProfile {
+  id: number,
+  name: string,
+  email: string,
+  password: string,
+  phone: string,
+  birthday: string,
+  gender: boolean,
+  role: string,
+  avatar: string
 
+}
 const Profile = (props: Props) => {
+  const { userProfile } = useSelector((state: RootState) => state.userReducer);
+  const dispatch: dispatchType = useDispatch();
+
+  const params = useParams();
+  const getUserProfile = async (id: any) => {
+    const action = await getProfileApi(id);
+    dispatch(action);
+  }
+  useEffect(() => {
+    getUserProfile(params.id);
+  }, [])
   return (
     <div >
       <div className="  mt-10 flex flex-wrap items-center  justify-center  ">
@@ -21,7 +48,7 @@ const Profile = (props: Props) => {
                 Cập nhật hình ảnh
               </NavLink></p>
 
-              <h2 className="text-gray-800 text-3xl font-bold">Mohit Dhiman</h2>
+              <h2 className="text-gray-800 text-3xl font-bold">{userProfile?.name}</h2>
 
               <p className="mt-2 text-gray-600">Xác minh danh tính của bạn với huy hiệu xác minh danh tính. </p>
               <button className="border shadow-lg px-5 py-2.5 rounded-lg hover:bg-gray-200 duration-200 font-semibold text-gray-800 my-1">Nhận huy hiệu</button>

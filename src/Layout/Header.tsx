@@ -10,13 +10,14 @@ import {
   SearchOutlined,
   ChromeOutlined,
 } from "@ant-design/icons";
-import { MenuProps, CollapseProps, Collapse } from "antd";
+import { MenuProps, CollapseProps, Collapse, Avatar } from "antd";
 import { Button, Dropdown, Space, Select, DatePicker, Input } from "antd";
 import type { DatePickerProps } from "antd";
 import { AutoComplete } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { height } from "@mui/system";
+// import { height } from "@mui/system";
 import { LocationState } from "../Reducer/locationReducer";
+import { USER_PROFILE, getStoreJson } from "../util/config";
 type Props = {};
 const items: MenuProps["items"] = [
   {
@@ -49,7 +50,25 @@ const items: MenuProps["items"] = [
     ),
   },
 ];
+const profile = getStoreJson(USER_PROFILE);
+const getProfileLink = () => {
+  if (profile == null) {
+    return null
+  } else {
+    return <Avatar
+      size={{
+        xs: 24,
+        sm: 32,
+        md: 40,
+        lg: 64,
+        xl: 70,
+        xxl: 75,
+      }}
+      src={profile.avatar}
+    />
 
+  }
+}
 const Header = (props: Props) => {
   const { location } = useSelector((state: any) => state.locationReducer);
   const options: any = [];
@@ -169,9 +188,9 @@ const Header = (props: Props) => {
                   options={options}
                   placeholder="Nhập địa điểm"
                   filterOption={true}
-                  onSelect={(value, option)=> {
+                  onSelect={(value, option) => {
                     console.log(option.key);
-                    
+
                   }}
                 >
                   <TextArea style={{ height: 30 }} />
