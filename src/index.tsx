@@ -32,11 +32,9 @@ root.render(
             element={<QuanLyDatPhong></QuanLyDatPhong>}
           ></Route>
           <Route
-            path="/phong-theo-vi-tri"
+            path="/phong-theo-vi-tri/:maViTri"
             element={<DanhSachPhong></DanhSachPhong>}
-          >
-            <Route path=":city-name"></Route>
-          </Route>
+          ></Route>
           <Route
             path="/chi-tiet-phong/:id"
             element={<ChiTietPhong></ChiTietPhong>}
@@ -48,9 +46,7 @@ root.render(
         </Route>
 
         <Route path="/dang-ky" element={<DangKy></DangKy>}></Route>
-        <Route path="/dang-nhap" element={<DangNhap></DangNhap>}>
-
-        </Route>
+        <Route path="/dang-nhap" element={<DangNhap></DangNhap>}></Route>
       </Routes>
     </HistoryRouter>
   </Provider>

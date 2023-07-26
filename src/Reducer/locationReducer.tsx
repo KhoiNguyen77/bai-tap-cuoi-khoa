@@ -13,7 +13,7 @@ export interface Room {
   giaTien: number;
   mayGiat: boolean;
   banLa: boolean;
-  tivi: boolean;  //done
+  tivi: boolean; //done
   dieuHoa: boolean;
   wifi: boolean; //done
   bep: boolean; //done
@@ -23,7 +23,13 @@ export interface Room {
   maViTri: number;
   hinhAnh: string;
 }
-
+export interface Comment {
+  ngayBinhLuan: string;
+  noiDung: string;
+  saoBinhLuan: number;
+  tenNguoiBinhLuan: string;
+  avatar: string;
+}
 export interface Location {
   id: number;
   tenViTri: string;
@@ -35,11 +41,15 @@ export interface LocationState {
   location: Location[];
   rooms: Room[];
   roomDetail: Room | null;
+  comments: Comment[];
+  roomByLocation: Room[];
 }
 const initialState: LocationState = {
   location: [],
   rooms: [],
   roomDetail: null,
+  comments: [],
+  roomByLocation: [],
 };
 
 const locationReducer = createSlice({
@@ -55,11 +65,22 @@ const locationReducer = createSlice({
     roomDetailAction: (state, action) => {
       state.roomDetail = action.payload;
     },
+    getCommentAction: (state, action) => {
+      state.comments = action.payload;
+    },
+    getRoomAction: (state, action) => {
+      state.roomByLocation = action.payload;
+    },
   },
 });
 
-export const { locationAction, roomAction, roomDetailAction } =
-  locationReducer.actions;
+export const {
+  locationAction,
+  roomAction,
+  roomDetailAction,
+  getCommentAction,
+  getRoomAction,
+} = locationReducer.actions;
 
 export default locationReducer.reducer;
 
@@ -94,6 +115,34 @@ export const getRoomDetailAPI = (id: any) => {
     console.log(res.data.content);
     if (res) {
       const action = roomDetailAction(res.data.content);
+      dispatch(action);
+    }
+  };
+};
+
+// Get comment detail
+export const getCommentAPI = (id: any) => {
+  return async (dispatch: Dispatch) => {
+    const res = await httpNonAuth.get(
+      `/api/binh-luan/lay-binh-luan-theo-phong/${id}`
+    );
+    console.log(res.data.content);
+    if (res) {
+      const action = getCommentAction(res.data.content);
+      dispatch(action);
+    }
+  };
+};
+
+// Get room by location
+export const getRoomByLocation = (maViTri: any) => {
+  return async (dispatch: Dispatch) => {
+    const res = await httpNonAuth.get(
+      `/api/phong-thue/lay-phong-theo-vi-tri?maViTri=${maViTri}`
+    );
+    console.log(res.data.content);
+    if (res) {
+      const action = getRoomAction(res.data.content);
       dispatch(action);
     }
   };

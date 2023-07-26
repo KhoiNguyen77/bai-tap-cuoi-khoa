@@ -1,23 +1,40 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import { getRoomByLocation } from "../Reducer/locationReducer";
+import { string } from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../Reducer/configStore";
 
 type Props = {};
 
 const DanhSachPhong = (props: Props) => {
+  const { maViTri } = useParams();
+  const { roomByLocation } = useSelector(
+    (state: RootState) => state.locationReducer
+  );
+  const dispatch = useDispatch();
+  console.log(maViTri);
+  const getRoom = async () => {
+    const action: any = await getRoomByLocation(maViTri);
+    dispatch(action);
+  };
+  useEffect(() => {
+    getRoom();
+  }, [maViTri]);
   return (
     <>
       <div className="container grid xs:grid-cols-1 lg:grid-cols-2 gap-10 justify-center">
         <div className="room-list">
           <div className="filter flex justify-between my-3 items-center">
-            <p className="bold text-2xl">Hơn 1000 căn hộ</p>
+            <p className="bold text-2xl">Kết quả: {roomByLocation.length} căn hộ</p>
             <div className="filter-button">
-              <button className="p-3 rounded-lg border-2 border border-solid border-black hover:shadow-xl">
+              <button className="p-3 rounded-lg border border-solid border-black hover:shadow-xl">
                 <i className="fa fa-filter"></i> Bộ lọc
               </button>
             </div>
           </div>
           <div className="grid lg:grid-cols-2 sm:grid-cols-1 justify-center gap-10 w-full">
-            <NavLink
+            {/* <NavLink
               to={"/"}
               className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
             >
@@ -248,7 +265,43 @@ const DanhSachPhong = (props: Props) => {
               <div className="price text-gray-500 text-lg">
                 <strong className="text-black">$109</strong> đêm
               </div>
-            </NavLink>
+            </NavLink> */}
+            {roomByLocation.length > 0 &&
+              roomByLocation.map((room) => {
+                return (
+                  <NavLink
+                    to={`/chi-tiet-phong/${room.id}`}
+                    className="room cursor-pointer hover:shadow-xl ease-in-out duration-500 p-5 rounded-lg"
+                  >
+                    <div className="room_image mb-4">
+                      <img
+                        className="rounded-lg"
+                        width={"100%"}
+                        src={room.hinhAnh}
+                        alt=""
+                      />
+                    </div>
+                    <div className="name grid grid-cols-4 font-bold text-sm gap-5">
+                      <p className="col-span-3">{room.tenPhong}</p>
+                      <p>
+                        <i className="fa fa-star"></i>
+                        {(Math.random() * 5).toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="distance text-gray-500 text-sm">
+                      <p>{Math.floor(Math.random() * 10)} km</p>
+                    </div>
+                    <div className="date text-gray-500 text-sm">
+                      Ngày {Math.floor(Math.random() * 30) + 1} - Ngày{" "}
+                      {Math.floor(Math.random() * 30)} tháng 2
+                    </div>
+                    <div className="price text-gray-500 text-lg">
+                      <strong className="text-black">${room.giaTien}</strong>{" "}
+                      đêm
+                    </div>
+                  </NavLink>
+                );
+              })}
           </div>
         </div>
         <div className="map w-full xs:hidden md:block relative">

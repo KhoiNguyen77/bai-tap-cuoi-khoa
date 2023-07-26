@@ -2,23 +2,29 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../Reducer/configStore";
-import { getRoomDetailAPI } from "../Reducer/locationReducer";
+import { getCommentAPI, getRoomDetailAPI } from "../Reducer/locationReducer";
 import { Action } from "@reduxjs/toolkit";
+import { log } from "console";
 
 type Props = {};
 
 const ChiTietPhong = (props: Props) => {
-  const { id } = useParams();
+  const { id } = useParams();  
   const dispatch = useDispatch();
-  const { roomDetail } = useSelector(
+  const { roomDetail, comments } = useSelector(
     (state: RootState) => state.locationReducer
   );
   const getRoomDetail = async () => {
     const action: any = await getRoomDetailAPI(id);
     dispatch(action);
   };
+  const getComment = async () => {
+    const action: any = await getCommentAPI(id);
+    dispatch(action);
+  };
   useEffect(() => {
     getRoomDetail();
+    getComment();
   }, [id]);
   console.log(roomDetail?.moTa.split(/\n/));
 
@@ -99,7 +105,7 @@ const ChiTietPhong = (props: Props) => {
                 </div>
               </div>
             </div>
-            <div className="cons  border-b border-solid border-gray-400 py-2">
+            <div className="cons  border-b border-solid border-gray-400 py-2 text-justify">
               {roomDetail?.moTa &&
                 roomDetail?.moTa
                   .split(/\n/)
@@ -417,7 +423,32 @@ const ChiTietPhong = (props: Props) => {
 
           <div className="comment-section grid grid-cols-2 gap-x-52 col-span-2">
             <p className="font-bold text-2xl col-span-2">Bình luận</p>
-            <div className="comment col-span-2 border-b border-solid border-gray-200 py-5">
+            {comments.length >= 0 &&
+              comments?.map((comment) => {
+                return (
+                  <div className="comment col-span-2 border-b border-solid border-gray-200 py-5">
+                    <div className="user flex items-center gap-20">
+                      <div className="user-avatar">
+                        <img
+                          src={comment.avatar}
+                          alt=""
+                          className="rounded-full overflow-hidden w-14 h-14 inline-block"
+                        />
+                      </div>
+                      <div className="user-comment">
+                        <p className="font-bold text-xl">
+                          {comment.tenNguoiBinhLuan}
+                        </p>
+                        <p className="text-base text-gray-400 italic">
+                          {comment.ngayBinhLuan}
+                        </p>
+                        <p>{comment.noiDung}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            {/* <div className="comment col-span-2 border-b border-solid border-gray-200 py-5">
               <div className="user flex items-center gap-20">
                 <div className="user-avatar">
                   <img
@@ -470,7 +501,7 @@ const ChiTietPhong = (props: Props) => {
                   <p>Phòng đẹp</p>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="show-all mt-10 col-span-2">
               <button className="p-3 border border-solid rounded-lg w-64 py-3 hover:bg-gray-200 font-bold duration-300">
                 Hiển thị tất cả bình luận

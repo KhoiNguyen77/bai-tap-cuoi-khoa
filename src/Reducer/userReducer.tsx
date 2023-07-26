@@ -15,7 +15,7 @@ import { formProfile } from "../Pages/Profile";
 interface UserLogin {
   email: string;
   accenToken: string;
-  id: number
+  id: number;
 }
 interface UserRegister {
   id: number;
@@ -37,8 +37,7 @@ interface UserProfile {
   birthday: string;
   gender: boolean;
   role: string;
-  avatar: string
-
+  avatar: string;
 }
 interface UserState {
   userLogin: UserLogin | null | undefined;
@@ -75,14 +74,12 @@ export default userReducer.reducer;
 // Đăng ký
 export const signUp = (userInfo: formRegister) => {
   return async (dispatch: dispatchType) => {
-
     let res = await httpNonAuth.post("/api/auth/signup", userInfo);
     if (res) {
       console.log(res.data);
       window.alert("Bạn đã đăng ký tài khoản thành công !");
       const action: PayloadAction<UserRegister> = signUpAction(userInfo);
       dispatch(action);
-
     }
   };
 };
@@ -90,23 +87,26 @@ export const signUp = (userInfo: formRegister) => {
 export const LoginActionApi = (useLoginFrom: formValue) => {
   return async (dispatch: dispatchType) => {
     let res = await httpNonAuth.post("/api/auth/signin", useLoginFrom);
-    setStoreJson(USER_LOGIN, res.data.content);
-    const action: PayloadAction<UserLogin> = loginAction(res.data.content);
-    dispatch(action);
-    console.log(res.data)
-    history.push(`/thong-tin-ca-nhan/${useLoginFrom}`)
+    console.log(res.data.content);
+    if (res) {
+      setStoreJson(USER_LOGIN, res.data.content);
+      const action: PayloadAction<UserLogin> = loginAction(res.data.content);
+      dispatch(action);
+      history.push(`/thong-tin-ca-nhan/${res.data.content.user.id}`);
+    }
   };
 };
 //profile
 export const getProfileApi = (id: number) => {
   return async (dispatch: dispatchType) => {
-    let res = await httpNonAuth.get(`/api/users/?id=${id}`);
+    let res = await httpNonAuth.get(`/api/users/${id}`);
     if (res) {
-      console.log(res.data)
+      console.log(res.data);
       setStoreJson(USER_PROFILE, res.data.content);
-      const action: PayloadAction<UserProfile> = profileAction(res.data.content);
+      const action: PayloadAction<UserProfile> = profileAction(
+        res.data.content
+      );
       dispatch(action);
-
     }
-  }
-}
+  };
+};

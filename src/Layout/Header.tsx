@@ -3,6 +3,8 @@ import cn from "classnames";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Location } from "../Reducer/locationReducer";
+import { useForm } from "react-hook-form";
+
 //antdesign
 import {
   UserOutlined,
@@ -18,6 +20,7 @@ import TextArea from "antd/es/input/TextArea";
 // import { height } from "@mui/system";
 import { LocationState } from "../Reducer/locationReducer";
 import { USER_PROFILE, getStoreJson } from "../util/config";
+import { history } from "..";
 type Props = {};
 const items: MenuProps["items"] = [
   {
@@ -82,7 +85,11 @@ const Header = (props: Props) => {
   });
   let [isOpen, setOpen] = useState(false);
   let [heightState, setHeight] = useState("0");
-
+  const { register, handleSubmit } = useForm();
+  const onSubmit = (values: any) => {
+    setOpen(false);
+    history.push(`/phong-theo-vi-tri/${values.maViTri}`);
+  };
   return (
     <>
       <nav className="top-0  w-full z-20 border-b shadow-lg">
@@ -176,31 +183,48 @@ const Header = (props: Props) => {
             </Dropdown>
           </div>
         </div>
-
         {isOpen && (
           <>
             <form
-              className="transition-all duration-300 searchBar grid lg:grid-cols-4 grid-cols-1 gap-4 grid-rows-1 mx-auto p-5 w-1/2 border-2 rounded-full text-center"
+              className="transition-all duration-300 searchBar grid lg:grid-cols-5 grid-cols-1 grid-rows-1 mx-auto p-5 w-2/3 border-2 rounded-full text-center items-center justify-center"
               style={{
                 transform: `translateY(${setHeight})`,
               }}
+              onSubmit={handleSubmit(onSubmit)}
             >
-              <div className="select">
+              <div className="select col-span-1">
                 <p>Địa điểm</p>
-                <AutoComplete
+                <select
+                  {...register("maViTri")}
+                  style={{ width: 200, height: 50 }}
+                  className="border border-solid border-gray-300 rounded-md appearance-none text-md text-center"
+                >
+                  <option selected disabled>
+                    Chọn địa điểm
+                  </option>
+                  {location.length > 0 &&
+                    location.map((option: Location, index: number) => {
+                      return (
+                        <option value={option.id} key={index}>
+                          {option.tenViTri + `, ` + option.tinhThanh}
+                        </option>
+                      );
+                    })}
+                </select>
+                {/* <AutoComplete
                   className="inline-block w-full mx-auto"
                   style={{ width: 200 }}
                   options={options}
-                  placeholder="Nhập địa điểm"
                   filterOption={true}
                   onSelect={(value, option) => {
-                    console.log(option.key);
+                    let maViTri = option.key;
+                    return maViTri;
                   }}
                 >
-                  <TextArea style={{ height: 30 }} />
-                </AutoComplete>
+                  <TextArea style={{ height: 48 }} {...register("maViTri")} />
+                </AutoComplete> */}
               </div>
-              <div className="select">
+              <div className="select col-span-1">
                 <p className="ml-3">Nhận phòng</p>
                 <DatePicker
                   style={{ width: 200 }}
@@ -208,9 +232,12 @@ const Header = (props: Props) => {
                   placeholder="dd/MM/YYYY"
                   format={"dd/MM/YYYY"}
                   className="inline-block p-3 w-full mx-auto"
+                  onSelect={(value) => {
+                    console.log(value);
+                  }}
                 />
               </div>
-              <div className="select">
+              <div className="select col-span-1">
                 <p className="ml-3">Trả phòng</p>
                 <DatePicker
                   style={{ width: 200 }}
@@ -218,9 +245,12 @@ const Header = (props: Props) => {
                   bordered={true}
                   format={"dd/MM/YYYY"}
                   className="inline-block p-3 w-full mx-auto"
+                  onSelect={(value) => {
+                    console.log(value);
+                  }}
                 />
               </div>
-              <div className="select">
+              <div className="select col-span-1">
                 <p>Khách</p>
                 <Input
                   style={{ width: 200 }}
@@ -229,7 +259,18 @@ const Header = (props: Props) => {
                   defaultValue={0}
                   height={50}
                   className="inline-block p-3 w-full mx-auto"
+                  onChange={(value) => {
+                    console.log(value);
+                  }}
                 />
+              </div>
+              <div className="submit-button col-span-1">
+                <button
+                  className=" border-none h-14 w-14 rounded-full bg-pink-600 text-white text-center"
+                  type="submit"
+                >
+                  <i className="fa fa-search"></i>
+                </button>
               </div>
             </form>
           </>
