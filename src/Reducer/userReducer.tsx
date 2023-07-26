@@ -15,6 +15,7 @@ import { formProfile } from "../Pages/Profile";
 interface UserLogin {
   email: string;
   accenToken: string;
+  id: number
 }
 interface UserRegister {
   id: number;
@@ -92,14 +93,16 @@ export const LoginActionApi = (useLoginFrom: formValue) => {
     setStoreJson(USER_LOGIN, res.data.content);
     const action: PayloadAction<UserLogin> = loginAction(res.data.content);
     dispatch(action);
-    history.push('/thong-tin-ca-nhan')
+    console.log(res.data)
+    history.push(`/thong-tin-ca-nhan/${useLoginFrom}`)
   };
 };
 //profile
-export const getProfileApi = (id: string | number) => {
+export const getProfileApi = (id: number) => {
   return async (dispatch: dispatchType) => {
-    let res = await http.get(`/api/users/${id}`);
+    let res = await httpNonAuth.get(`/api/users/?id=${id}`);
     if (res) {
+      console.log(res.data)
       setStoreJson(USER_PROFILE, res.data.content);
       const action: PayloadAction<UserProfile> = profileAction(res.data.content);
       dispatch(action);

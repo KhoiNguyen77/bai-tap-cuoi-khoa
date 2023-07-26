@@ -9,7 +9,8 @@ import { LoginActionApi } from '../Reducer/userReducer'
 
 export interface formValue {
   email: string,
-  password: string
+  password: string,
+
 }
 
 type Props = {}
@@ -19,16 +20,16 @@ const DangNhap = (props: Props) => {
   const frm = useFormik<formValue>({
     initialValues: {
       email: '',
-      password: ''
+      password: '',
     },
     validationSchema: yup.object().shape({
       email: yup.string().required('email không được để trống!').email('sai định dạng email'),
       password: yup.string().required('password không để trống !')
     }),
     onSubmit: (value: formValue) => {
-      // dua ve redux call api
       const actionAsync = LoginActionApi(value);
       dispatch(actionAsync);
+
     }
 
   })

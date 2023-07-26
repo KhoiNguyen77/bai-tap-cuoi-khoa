@@ -42,13 +42,15 @@ root.render(
             element={<ChiTietPhong></ChiTietPhong>}
           ></Route>
           <Route
-            path="/thong-tin-ca-nhan"
+            path="/thong-tin-ca-nhan/:id"
             element={<Profile></Profile>}
           ></Route>
         </Route>
 
         <Route path="/dang-ky" element={<DangKy></DangKy>}></Route>
-        <Route path="/dang-nhap" element={<DangNhap></DangNhap>}></Route>
+        <Route path="/dang-nhap" element={<DangNhap></DangNhap>}>
+
+        </Route>
       </Routes>
     </HistoryRouter>
   </Provider>

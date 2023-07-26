@@ -23,15 +23,19 @@ const Profile = (props: Props) => {
   const { userProfile } = useSelector((state: RootState) => state.userReducer);
   const dispatch: dispatchType = useDispatch();
 
-  const params = useParams();
+  const { id } = useParams();
   const getUserProfile = async (id: any) => {
     const action = await getProfileApi(id);
     dispatch(action);
+
   }
+  console.log(id)
   useEffect(() => {
-    getUserProfile(params.id);
-  }, [])
+
+    getUserProfile(id);
+  }, [id])
   return (
+
     <div >
       <div className="  mt-10 flex flex-wrap items-center  justify-center  ">
         <div className=" sticky top-32 container lg:w-1/5 xl:w-2/7 sm:w-full md:w-2/3    bg-white  shadow-lg    transform   duration-200 easy-in-out ">
@@ -48,7 +52,8 @@ const Profile = (props: Props) => {
                 Cập nhật hình ảnh
               </NavLink></p>
 
-              <h2 className="text-gray-800 text-3xl font-bold">{userProfile?.name}</h2>
+              <h2 className="text-gray-800 text-3xl font-bold">Trịnh Phú Thành</h2>
+              <h2 className="text-gray-800 text-3xl font-bold">{userProfile?.id}</h2>
 
               <p className="mt-2 text-gray-600">Xác minh danh tính của bạn với huy hiệu xác minh danh tính. </p>
               <button className="border shadow-lg px-5 py-2.5 rounded-lg hover:bg-gray-200 duration-200 font-semibold text-gray-800 my-1">Nhận huy hiệu</button>
