@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { history } from "../index";
-
+import swal from 'sweetalert';
 //setup hằng số
 export const DOMAIN = "https://airbnbnew.cybersoft.edu.vn";
 export const TOKEN = "accessToken";
@@ -50,6 +50,27 @@ httpNonAuth.interceptors.request.use(
     return Promise.reject(err);
   }
 );
+httpNonAuth.interceptors.response.use(res => {
+  return res
+}, err => {
+  if (err.response?.status == 400 || err.response?.status == 404) {
+    swal({
+      title: "Sai Email hoặc mật khẩu",
+      icon: "warning"
+    })
+  }
+  if (err.response?.status == 401) {
+    swal({
+      title: "Vui lòng đăng nhập trước !"
+    })
+
+  }
+  if (err.response?.status == 500) {
+    swal({
+      title: (err.response.data.message)
+    })
+  }
+})
 // http.interceptors.request.use((config: any) => {
 //     config.headers = { ...config.headers }
 //     let token = getStoreJson(USER_LOGIN)?.accessToken;

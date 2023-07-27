@@ -11,11 +11,13 @@ import { formValue } from "../Pages/DangNhap";
 import { dispatchType } from "./configStore";
 import { formRegister } from "../Pages/DangKy";
 import { history } from "..";
-import { formProfile } from "../Pages/Profile";
+import swal from 'sweetalert';
+
+
 interface UserLogin {
   email: string;
   accenToken: string;
-  id: number;
+
 }
 interface UserRegister {
   id: number;
@@ -37,7 +39,8 @@ interface UserProfile {
   birthday: string;
   gender: boolean;
   role: string;
-  avatar: string;
+  avatar: string
+
 }
 interface UserState {
   userLogin: UserLogin | null | undefined;
@@ -74,39 +77,43 @@ export default userReducer.reducer;
 // Đăng ký
 export const signUp = (userInfo: formRegister) => {
   return async (dispatch: dispatchType) => {
+
     let res = await httpNonAuth.post("/api/auth/signup", userInfo);
     if (res) {
       console.log(res.data);
       window.alert("Bạn đã đăng ký tài khoản thành công !");
       const action: PayloadAction<UserRegister> = signUpAction(userInfo);
       dispatch(action);
+
     }
   };
 };
 //Đăng nhập
 export const LoginActionApi = (useLoginFrom: formValue) => {
+
   return async (dispatch: dispatchType) => {
     let res = await httpNonAuth.post("/api/auth/signin", useLoginFrom);
-    console.log(res.data.content);
     if (res) {
       setStoreJson(USER_LOGIN, res.data.content);
       const action: PayloadAction<UserLogin> = loginAction(res.data.content);
       dispatch(action);
+      console.log(res.data)
       history.push(`/thong-tin-ca-nhan/${res.data.content.user.id}`);
     }
+
   };
 };
 //profile
 export const getProfileApi = (id: number) => {
+
   return async (dispatch: dispatchType) => {
     let res = await httpNonAuth.get(`/api/users/${id}`);
     if (res) {
-      console.log(res.data);
+      console.log(res.data)
       setStoreJson(USER_PROFILE, res.data.content);
-      const action: PayloadAction<UserProfile> = profileAction(
-        res.data.content
-      );
+      const action: PayloadAction<UserProfile> = profileAction(res.data.content);
       dispatch(action);
+
     }
-  };
-};
+  }
+}

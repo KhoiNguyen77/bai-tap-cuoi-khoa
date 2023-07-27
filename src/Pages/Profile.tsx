@@ -69,19 +69,16 @@ const Profile = (props: Props) => {
                 Nhận huy hiệu
               </button>
             </div>
-            <hr className="mt-6" />
-            <div className="flex  bg-gray-50 ">
-              <div className="text-center w-1/2 p-4 hover:bg-gray-100 cursor-pointer">
-                <p>
-                  <span className="font-semibold">2.5 k </span> Followers
-                </p>
+            <hr />
+            <div className="mt-2 border-t py-2 ml-3">
+              <div className="font-semibold text-lg text-gray-800">
+                Đã xác nhận
               </div>
-              <div className="border" />
-              <div className="text-center w-1/2 p-4 hover:bg-gray-100 cursor-pointer">
-                <p>
-                  {" "}
-                  <span className="font-semibold">2.0 k </span> Following
-                </p>
+              <div className="mt-2">
+                <i className="fa-solid fa-check" />
+                <span className="ml-2 text-sm italic">
+                  Địa chỉ email
+                </span>
               </div>
             </div>
           </div>

@@ -31,15 +31,19 @@ const DangNhap = (props: Props) => {
       dispatch(actionAsync);
 
     }
+  });
 
-  })
+
   return (
+
     <div className="w-screen h-screen relative" style={{
+
       backgroundImage: `url('../images/logo_login.jpg')`,
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover",
     }}
     >
+
       <div className="relative font-medium md:h-screen flex items-center content-center">
         <div className="mr-auto ml-auto w-full">
 

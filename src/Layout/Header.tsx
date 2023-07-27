@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import cn from "classnames";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Location } from "../Reducer/locationReducer";
 import { useForm } from "react-hook-form";
 
@@ -12,27 +12,33 @@ import {
   SearchOutlined,
   ChromeOutlined,
 } from "@ant-design/icons";
-import { MenuProps, CollapseProps, Collapse, Avatar } from "antd";
+import { MenuProps, CollapseProps, Collapse, Avatar, Divider } from "antd";
 import { Button, Dropdown, Space, Select, DatePicker, Input } from "antd";
 import type { DatePickerProps } from "antd";
 import { AutoComplete } from "antd";
 import TextArea from "antd/es/input/TextArea";
 // import { height } from "@mui/system";
 import { LocationState } from "../Reducer/locationReducer";
-import { USER_PROFILE, getStoreJson } from "../util/config";
+import { USER_LOGIN, USER_PROFILE, getStoreJson } from "../util/config";
 import { history } from "..";
+import { LoginActionApi, getProfileApi, loginAction, profileAction } from "../Reducer/userReducer";
+import { RootState } from "../Reducer/configStore";
+import { formRegister } from "../Pages/DangKy";
+import { formValue } from "../Pages/DangNhap";
+import { formProfile } from "../Pages/Profile";
 type Props = {};
+
 const items: MenuProps["items"] = [
   {
     key: "1",
-    label: <NavLink to="/dang-ky">Đăng ký</NavLink>,
+    label:
+      <NavLink to="/dang-ky">Đăng ký</NavLink>,
   },
   {
     key: "2",
     label: (
       <NavLink to="/dang-nhap">
-        Đăng Nhập
-        <hr />
+        <h3>Đăng Nhập</h3>
       </NavLink>
     ),
   },
@@ -47,35 +53,21 @@ const items: MenuProps["items"] = [
   {
     key: "5",
     label: (
+
       <NavLink to="">
         <h3> Trợ giúp</h3>
       </NavLink>
     ),
   },
 ];
-const profile = getStoreJson(USER_PROFILE);
-const getProfileLink = () => {
-  if (profile == null) {
-    return null;
-  } else {
-    return (
-      <Avatar
-        size={{
-          xs: 24,
-          sm: 32,
-          md: 40,
-          lg: 64,
-          xl: 70,
-          xxl: 75,
-        }}
-        src={profile.avatar}
-      />
-    );
-  }
-};
+
+
+
 const Header = (props: Props) => {
   const { location } = useSelector((state: any) => state.locationReducer);
+
   const options: any = [];
+  const dispatch = useDispatch();
   location.map((item: Location, index: number) => {
     options.push({
       label: item.tenViTri + ", " + item.tinhThanh,
@@ -86,6 +78,16 @@ const Header = (props: Props) => {
   let [isOpen, setOpen] = useState(false);
   let [heightState, setHeight] = useState("0");
   const { register, handleSubmit } = useForm();
+  const profile = getStoreJson(USER_LOGIN);
+
+  const handleLogOut = () => {
+    localStorage.removeItem(USER_LOGIN);
+    localStorage.removeItem(USER_PROFILE);
+    // const clearUser = loginAction(valuelogin);
+    // const clearProfile = profileAction(valueProfile);
+    // dispatch(clearUser);
+    // dispatch(clearProfile);
+  };
   const onSubmit = (values: any) => {
     setOpen(false);
     history.push(`/phong-theo-vi-tri/${values.maViTri}`);
@@ -156,32 +158,192 @@ const Header = (props: Props) => {
             )}
           </div>
           <div className="hidden sm:flex flex-initial  mx-5  ">
-            <NavLink to="/">
-              <p className="hidden lg:flex p-3 rounded-full hover:bg-gray-200">
-                Trở Thành Chủ Nhà{" "}
-              </p>
-            </NavLink>
-            <NavLink to="/">
-              <ChromeOutlined
-                style={{ fontSize: "32px" }}
-                className="hidden lg:flex  justify-start cursor-pointer mx-2  p-3 rounded-full hover:bg-gray-200"
-              />
-            </NavLink>
 
-            <Dropdown
-              menu={{ items }}
-              placement="topRight"
-              className="md:m flex justify-end p-3  rounded-full shadow-md"
-            >
-              <div>
-                <AlignRightOutlined
-                  style={{ fontSize: "25px" }}
-                  className="px-3"
-                />
-                <UserOutlined style={{ fontSize: "25px" }} className="px-3" />
+            <div className="relative flex items-center justify-end">
+              <div className="mr-4 flex items-center z-10">
+                <a
+                  className="inline-block rounded-full py-2 px-3 hover:bg-gray-200"
+                  href="#"
+                >
+                  <div className="hidden relative lg:flex cursor-pointer items-center whitespace-nowrap">
+                    Trở thành chủ nhà
+                  </div>
+                </a>
+                <div className="hidden relative lg:block">
+                  <button
+                    type="button"
+                    className="relative inline-block rounded-full py-2 px-3 hover:bg-gray-200"
+                  >
+                    <div className="flex h-5 items-center">
+                      <div className="_xpkakx">
+                        <svg
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                          role="presentation"
+                          focusable="false"
+                          style={{
+                            display: "block",
+                            height: 16,
+                            width: 16,
+                            fill: "currentcolor",
+                          }}
+                        >
+                          <path d="m8.002.25a7.77 7.77 0 0 1 7.748 7.776 7.75 7.75 0 0 1 -7.521 7.72l-.246.004a7.75 7.75 0 0 1 -7.73-7.513l-.003-.245a7.75 7.75 0 0 1 7.752-7.742zm1.949 8.5h-3.903c.155 2.897 1.176 5.343 1.886 5.493l.068.007c.68-.002 1.72-2.365 1.932-5.23zm4.255 0h-2.752c-.091 1.96-.53 3.783-1.188 5.076a6.257 6.257 0 0 0 3.905-4.829zm-9.661 0h-2.75a6.257 6.257 0 0 0 3.934 5.075c-.615-1.208-1.036-2.875-1.162-4.686l-.022-.39zm1.188-6.576-.115.046a6.257 6.257 0 0 0 -3.823 5.03h2.75c.085-1.83.471-3.54 1.059-4.81zm2.262-.424c-.702.002-1.784 2.512-1.947 5.5h3.904c-.156-2.903-1.178-5.343-1.892-5.494l-.065-.007zm2.28.432.023.05c.643 1.288 1.069 3.084 1.157 5.018h2.748a6.275 6.275 0 0 0 -3.929-5.068z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </button>
+                </div>
               </div>
-            </Dropdown>
+            </div>
+            <div className="block z-10">
+              <div className="relative inline">
+                <button
+                  type="button"
+                  className="relative inline-flex items-center rounded-full border px-2 hover:shadow-lg peer  focus:text-gray-200 transition-all duration-200 "
+                  onClick={() => {
+
+                  }}
+                >
+                  <div className="pl-1">
+                    <svg
+                      viewBox="0 0 32 32"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      role="presentation"
+                      focusable="false"
+                      style={{
+                        display: "block",
+                        fill: "none",
+                        height: 16,
+                        width: 16,
+                        stroke: "currentcolor",
+                        strokeWidth: 3,
+                        overflow: "visible",
+                      }}
+                    >
+                      <g fill="none" fillRule="nonzero">
+                        <path d="m2 16h28" />
+                        <path d="m2 24h28" />
+                        <path d="m2 8h28" />
+                      </g>
+                    </svg>
+                  </div>
+                  <div className="block h-10 w-12 pl-4">
+                    {profile ? (
+                      <div className="w-full h-full flex justify-center items-center">
+                        <img
+                          src={profile?.avatar}
+                          alt=""
+                          className="w-7 h-7 rounded-full"
+                        />
+                      </div>
+                    ) : (
+                      <svg
+                        viewBox="0 0 32 32"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                        role="presentation"
+                        focusable="false"
+                        style={{
+                          display: "block",
+                          height: "100%",
+                          width: "100%",
+                          fill: "currentcolor",
+                        }}
+                      >
+                        <path d="m16 .7c-8.437 0-15.3 6.863-15.3 15.3s6.863 15.3 15.3 15.3 15.3-6.863 15.3-15.3-6.863-15.3-15.3-15.3zm0 28c-4.021 0-7.605-1.884-9.933-4.81a12.425 12.425 0 0 1 6.451-4.4 6.507 6.507 0 0 1 -3.018-5.49c0-3.584 2.916-6.5 6.5-6.5s6.5 2.916 6.5 6.5a6.513 6.513 0 0 1 -3.019 5.491 12.42 12.42 0 0 1 6.452 4.4c-2.328 2.925-5.912 4.809-9.933 4.809z" />
+                      </svg>
+                    )}
+                  </div>
+                </button>
+                {profile ? (
+                  <div className=" w-80 absolute  z-10
+                  after:content-[&quot;&quot;] after:inline-block after:absolute after:top-0 after:bg-white/40
+                  after:w-full after:h-full after:-z-20 after:blur-[2px] after:rounded-lg
+                  peer-focus:top-12 right-0  peer-focus:opacity-100 peer-focus:visible 
+                  transition-all duration-300 invisible  opacity-0 
+                  ">
+                    <ul className="py-2 px-3 flex flex-col  ">
+                      <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
+                        <NavLink to="/dang-nhap">
+                          <h3>Tin nhắn</h3>
+                        </NavLink>
+                      </li>
+                      <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
+                        <NavLink to="/dang-ky">
+                          <h3>Chuyến đi</h3>
+                        </NavLink>
+                      </li>
+                      <li className="cursor-pointer bg-slate-50 p-3 border-b-2  hover:bg-slate-200 text-black ">
+                        <NavLink to="/thong-tin-ca-nhan">
+                          <h3>Thông tin cá nhân</h3>
+                        </NavLink>
+
+                      </li>
+
+                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                        <NavLink to="">Cho Thuê Nhà</NavLink>
+                      </li>
+                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                        <NavLink to="">Tổ Chức trách nhiệm</NavLink>
+                      </li>
+                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                        <NavLink to="">Trợ giúp</NavLink>
+
+                      </li>
+
+                      <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
+                        <NavLink to="/dang-nhap" onClick={() => {
+                          handleLogOut();
+                        }}>Đăng xuất</NavLink>
+
+                      </li>
+
+                    </ul>
+                  </div>
+                ) : (
+                  <div className=" w-80 absolute  z-10
+        after:content-[&quot;&quot;] after:inline-block after:absolute after:top-0 after:bg-white/40
+        after:w-full after:h-full after:-z-20 after:blur-[2px] after:rounded-lg
+        peer-focus:top-12 right-0  peer-focus:opacity-100 peer-focus:visible 
+        transition-all duration-300 invisible  opacity-0 
+        ">
+                    <ul className="py-2 px-3 flex flex-col gap-2 ">
+                      <NavLink to="/dang-nhap">
+                        <li className="cursor-pointer bg-slate-100   p-4   rounded-md  hover:bg-slate-200 text-black">
+                          Đăng Nhập
+                        </li>
+                      </NavLink>
+                      <NavLink to="/dang-ky">
+                        <li className="cursor-pointer bg-slate-100   p-4   rounded-md  hover:bg-slate-200 text-black">
+                          <h3>Đăng ký</h3>
+                        </li>
+                      </NavLink>
+                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                        <NavLink to="">Cho Thuê Nhà</NavLink>
+                      </li>
+                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                        <NavLink to="">Tổ Chức trách nhiệm</NavLink>
+                      </li>
+                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                        <NavLink to="">Trợ giúp</NavLink>
+
+                      </li>
+
+                    </ul>
+                  </div>
+                )}
+
+
+
+
+              </div>
+            </div>
+
           </div>
+
         </div>
         {isOpen && (
           <>
@@ -275,6 +437,7 @@ const Header = (props: Props) => {
             </form>
           </>
         )}
+
       </nav>
     </>
   );
