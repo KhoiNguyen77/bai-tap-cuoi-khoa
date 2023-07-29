@@ -19,16 +19,22 @@ import { AutoComplete } from "antd";
 import TextArea from "antd/es/input/TextArea";
 // import { height } from "@mui/system";
 import { LocationState } from "../Reducer/locationReducer";
-import { USER_LOGIN, USER_PROFILE, getStoreJson } from "../util/config";
+import {
+  USER_LOGIN,
+  USER_PROFILE,
+  getStoreJson,
+  locationList,
+} from "../util/config";
 import { history } from "..";
-import { LoginActionApi, getProfileApi, loginAction, profileAction } from "../Reducer/userReducer";
+import {
+  LoginActionApi,
+  getProfileApi,
+  loginAction,
+  profileAction,
+} from "../Reducer/userReducer";
 import { RootState } from "../Reducer/configStore";
 
 type Props = {};
-
-
-
-
 
 const Header = (props: Props) => {
   const { location } = useSelector((state: any) => state.locationReducer);
@@ -57,6 +63,9 @@ const Header = (props: Props) => {
     dispatch(clearUser);
     dispatch(clearProfile);
   };
+  const locationStore = getStoreJson(locationList);
+
+
   const onSubmit = (values: any) => {
     setOpen(false);
     history.push(`/phong-theo-vi-tri/${values.maViTri}`);
@@ -127,7 +136,6 @@ const Header = (props: Props) => {
             )}
           </div>
           <div className="hidden sm:flex flex-initial  mx-5  ">
-
             <div className="relative flex items-center justify-end">
               <div className="mr-4 flex items-center z-10">
                 <a
@@ -173,9 +181,7 @@ const Header = (props: Props) => {
                 <button
                   type="button"
                   className="relative inline-flex items-center rounded-full border px-2 hover:shadow-lg peer  focus:text-gray-200 transition-all duration-200 "
-                  onClick={() => {
-
-                  }}
+                  onClick={() => {}}
                 >
                   <div className="pl-1">
                     <svg
@@ -230,20 +236,20 @@ const Header = (props: Props) => {
                   </div>
                 </button>
                 {profile ? (
-                  <div className=" w-80 absolute  z-10
-                  after:content-[&quot;&quot;] after:inline-block after:absolute after:top-0 after:bg-white/40
+                  <div
+                    className=' w-80 absolute  z-10
+                  after:content-[""] after:inline-block after:absolute after:top-0 after:bg-white/40
                   after:w-full after:h-full after:-z-20 after:blur-[2px] after:rounded-lg
                   peer-focus:top-12 right-0  peer-focus:opacity-100 peer-focus:visible 
                   transition-all duration-300 invisible  opacity-0 
-                  ">
+                  '
+                  >
                     <ul className="py-2 px-3 flex flex-col  ">
-
                       <NavLink to="/">
                         <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
                           <h3>Tin nhắn</h3>
                         </li>
                       </NavLink>
-
 
                       <NavLink to="/">
                         <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
@@ -251,15 +257,11 @@ const Header = (props: Props) => {
                         </li>
                       </NavLink>
 
-
                       <NavLink to="/thong-tin-ca-nhan/:id">
                         <li className="cursor-pointer bg-slate-50 p-3 border-b-2  hover:bg-slate-200 text-black ">
                           <h3>Thông tin cá nhân</h3>
                         </li>
                       </NavLink>
-
-
-
 
                       <NavLink to="/">
                         <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
@@ -277,10 +279,12 @@ const Header = (props: Props) => {
                         </li>
                       </NavLink>
 
-
-                      <NavLink to="/dang-nhap" onClick={() => {
-                        handleLogOut();
-                      }}>
+                      <NavLink
+                        to="/dang-nhap"
+                        onClick={() => {
+                          handleLogOut();
+                        }}
+                      >
                         <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
                           Đăng xuất
                         </li>
@@ -288,12 +292,14 @@ const Header = (props: Props) => {
                     </ul>
                   </div>
                 ) : (
-                  <div className=" w-80 absolute  z-10
-        after:content-[&quot;&quot;] after:inline-block after:absolute after:top-0 after:bg-white/40
+                  <div
+                    className=' w-80 absolute  z-10
+        after:content-[""] after:inline-block after:absolute after:top-0 after:bg-white/40
         after:w-full after:h-full after:-z-20 after:blur-[2px] after:rounded-lg
         peer-focus:top-12 right-0  peer-focus:opacity-100 peer-focus:visible 
         transition-all duration-300 invisible  opacity-0 
-        ">
+        '
+                  >
                     <ul className="py-2 px-3 flex flex-col  ">
                       <NavLink to="/dang-nhap">
                         <li className="cursor-pointer bg-slate-50   p-4   rounded-md  hover:bg-slate-200 text-black">
@@ -321,7 +327,6 @@ const Header = (props: Props) => {
                           Trợ giúp
                         </li>
                       </NavLink>
-
                     </ul>
                   </div>
                 )}
@@ -349,8 +354,8 @@ const Header = (props: Props) => {
                   <option selected disabled>
                     Chọn địa điểm
                   </option>
-                  {location.length > 0 &&
-                    location.map((option: Location, index: number) => {
+                  {locationStore.length > 0 &&
+                    locationStore.map((option: Location, index: number) => {
                       return (
                         <option value={option.id} key={index}>
                           {option.tenViTri + `, ` + option.tinhThanh}
@@ -379,9 +384,6 @@ const Header = (props: Props) => {
                   placeholder="dd/MM/YYYY"
                   format={"dd/MM/YYYY"}
                   className="inline-block p-3 w-full mx-auto"
-                  onSelect={(value) => {
-                    console.log(value);
-                  }}
                 />
               </div>
               <div className="select col-span-1">
@@ -392,9 +394,6 @@ const Header = (props: Props) => {
                   bordered={true}
                   format={"dd/MM/YYYY"}
                   className="inline-block p-3 w-full mx-auto"
-                  onSelect={(value) => {
-                    console.log(value);
-                  }}
                 />
               </div>
               <div className="select col-span-1">
@@ -406,9 +405,6 @@ const Header = (props: Props) => {
                   defaultValue={0}
                   height={50}
                   className="inline-block p-3 w-full mx-auto"
-                  onChange={(value) => {
-                    console.log(value);
-                  }}
                 />
               </div>
               <div className="submit-button col-span-1">
@@ -422,7 +418,6 @@ const Header = (props: Props) => {
             </form>
           </>
         )}
-
       </nav>
     </>
   );

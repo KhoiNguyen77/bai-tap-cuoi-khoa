@@ -1,15 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "../Reducer/configStore";
-import { getCommentAPI, getRoomDetailAPI } from "../Reducer/locationReducer";
+import {
+  BookRoom,
+  Toast,
+  addComment,
+  bookRoom,
+  getCommentAPI,
+  getRoomDetailAPI,
+} from "../Reducer/locationReducer";
 import { Action } from "@reduxjs/toolkit";
 import { log } from "console";
-
+import { DatePicker, DatePickerProps } from "antd";
+import { useForm } from "react-hook-form";
+import { USER_PROFILE, getStoreJson } from "../util/config";
+import { NavLink } from "react-router-dom";
+import Swal from "sweetalert2";
+import { json } from "stream/consumers";
+import { userInfo } from "os";
 type Props = {};
 
 const ChiTietPhong = (props: Props) => {
-  const { id } = useParams();  
+  let [guest, setGuest] = useState(0);
+  const { id } = useParams();
   const dispatch = useDispatch();
   const { roomDetail, comments } = useSelector(
     (state: RootState) => state.locationReducer
@@ -22,12 +36,85 @@ const ChiTietPhong = (props: Props) => {
     const action: any = await getCommentAPI(id);
     dispatch(action);
   };
+  const { register, handleSubmit } = useForm();
   useEffect(() => {
     getRoomDetail();
     getComment();
-  }, [id]);
-  console.log(roomDetail?.moTa.split(/\n/));
+  }, [id, dispatch]);
 
+  const [ngayDen, setNgayDen] = useState<any>(null);
+  const [ngayDi, setNgayDi] = useState<any>(null);
+  const onChangeNgayDen: DatePickerProps["onChange"] = (date) => {
+    setNgayDen(date);
+  };
+
+  const onChangeNgayDi: DatePickerProps["onChange"] = (date) => {
+    setNgayDi(date);
+  };
+  const currentUser = getStoreJson(USER_PROFILE);
+  const onSubmit = (values: any) => {
+    if (currentUser == null) {
+      Swal.fire({
+        icon: "warning",
+        text: "Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tuc",
+        footer: `<a href='/dang-nhap'>Đăng nhập ngay tại đây</a>`,
+      });
+      return;
+    }
+    if (ngayDen > ngayDi) {
+      Swal.fire({
+        icon: "error",
+        text: "Ngày trả phòng không hợp lệ",
+      });
+      return;
+    }
+    let dataBack: BookRoom = {
+      id: currentUser?.id,
+      maPhong: roomDetail?.id,
+      ngayDen: JSON.parse(JSON.stringify(ngayDen)),
+      ngayDi: JSON.parse(JSON.stringify(ngayDi)),
+      soLuongKhach: guest,
+      maNguoiDung: currentUser.id,
+    };
+    if (ngayDen == null) {
+      Swal.fire({
+        icon: "error",
+        text: "Ngày nhận phòng không hợp lệ",
+      });
+      return;
+    } else if (guest == 0) {
+      Swal.fire({
+        icon: "error",
+        text: "Số lượng khách không hợp lệ",
+      });
+    } else {
+      bookRoom(dataBack);
+    }
+  };
+
+  const date = new Date();
+  const onSubmitComment = async (values: any) => {
+    let dataBack = {
+      id: currentUser.id,
+      maPhong: roomDetail?.id,
+      maNguoiBinhLuan: currentUser.id,
+      ngayBinhLuan: `${date.getDate()}/${
+        date.getMonth() + 1
+      }/${date.getFullYear()}`,
+      noiDung: values.noiDung,
+      saoBinhLuan: 0,
+    };
+    if (values.noiDung == "") {
+      Toast.fire({
+        icon: "error",
+        title: "Vui lòng nhập nội dung bình luận",
+      });
+      return;
+    } else {
+      addComment(dataBack);
+      getComment();
+    }
+  };
   return (
     <div className="container mx-auto w-full p-5">
       <div className="name">
@@ -272,45 +359,88 @@ const ChiTietPhong = (props: Props) => {
                 </div>
                 <div className="right flex">
                   <p className="mr-5 underline text-sm md:text-base">
-                    {Math.floor(Math.random() * 100)} đánh giá
+                    100 đánh giá
                   </p>
                   <p className="mr-5 text-sm md:text-base">
-                    <i className="fa fa-star mr-1"></i>{" "}
-                    {(Math.random() * 5).toFixed(2)}
+                    <i className="fa fa-star mr-1"></i> 4
                   </p>
                 </div>
               </div>
-              <div className="book mt-4">
+              <form className="book mt-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-1 grid-rows-2 border border-gray-300 border-solid rounded-lg">
                   <div className="rows-span-1 grid col-span-2 grid-cols-2 border-b border-solid border-gray-300 text-center">
                     <div className="grid-cols-1 p-3 border-e border-gray-300 border-solid hover:bg-gray-100 duration-150">
-                      <button>
-                        <p>NHẬN PHÒNG</p>
-                        <p>23-07-2023</p>
+                      <button type="button">
+                        <p className="font-bold">NHẬN PHÒNG</p>
+                        <DatePicker
+                          style={{ width: 200 }}
+                          placeholder="dd/MM/YYYY"
+                          bordered={true}
+                          format={"DD/MM/YYYY"}
+                          className="inline-block p-3 w-full mx-auto"
+                          onChange={onChangeNgayDen}
+                        />
                       </button>
                     </div>
                     <div className="grid-cols-1 p-3 hover:bg-gray-100 duration-150">
-                      <button className="">
-                        <p>TRẢ PHÒNG</p>
-                        <p>23-07-2023</p>
+                      <button type="button">
+                        <p className="font-bold">TRẢ PHÒNG</p>
+                        <DatePicker
+                          style={{ width: 200 }}
+                          placeholder="dd/MM/YYYY"
+                          bordered={true}
+                          format={"DD/MM/YYYY"}
+                          className="inline-block p-3 w-full mx-auto"
+                          onChange={onChangeNgayDi}
+                        />
                       </button>
                     </div>
                   </div>
                   <div className="row-span-1 col-span-2">
                     <div className="">
-                      <div className="grid-cols-2 p-3">
-                        <p>KHÁCH</p>
+                      <div className="grid-cols-2 p-3 items-center justify-center text-center">
+                        <p className="font-bold">KHÁCH</p>
+                        <div className="grid grid-cols-3 mt-3">
+                          <div className="col-span-1 text-center">
+                            <button
+                              type="button"
+                              className=" bg-gray-400 h-8 w-8 rounded-lg"
+                              onClick={() => {
+                                setGuest((guest = guest + 1));
+                              }}
+                            >
+                              +
+                            </button>
+                          </div>
+                          <div className="col-span-1 text-center">
+                            <button>{guest} khách</button>
+                          </div>
+                          <div className="col-span-1 text-center">
+                            <button
+                              type="button"
+                              className=" bg-gray-400 h-8 w-8 rounded-lg"
+                              onClick={() => {
+                                if (guest > 0) setGuest((guest = guest - 1));
+                              }}
+                            >
+                              -
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="row-span-1 col-span-2 mx-auto w-full mt-5 text-center">
-                  <button className="p-5 block w-full rounded-lg text-white bg-pink-600 text-xl hover:bg-pink-700 duration-150">
+                  <button
+                    type="submit"
+                    className="p-5 block w-full rounded-lg text-white bg-pink-600 text-xl hover:bg-pink-700 duration-150"
+                  >
                     Đặt phòng
                   </button>
                   <p className="mt-3 text-gray-300">Bạn vẫn chưa bị trừ tiền</p>
                 </div>
-              </div>
+              </form>
               <div className="total flex justify-between items-center mt-3">
                 <div className="left">
                   <p className="underline">{roomDetail?.giaTien}$ x 0 đêm</p>
@@ -448,6 +578,7 @@ const ChiTietPhong = (props: Props) => {
                   </div>
                 );
               })}
+
             {/* <div className="comment col-span-2 border-b border-solid border-gray-200 py-5">
               <div className="user flex items-center gap-20">
                 <div className="user-avatar">
@@ -507,6 +638,41 @@ const ChiTietPhong = (props: Props) => {
                 Hiển thị tất cả bình luận
               </button>
             </div>
+            {currentUser != null && (
+              <form
+                className="comment col-span-2 mt-10"
+                onSubmit={handleSubmit(onSubmitComment)}
+              >
+                <div className="user flex items-center gap-20">
+                  <div className="user-avatar">
+                    <img
+                      src={currentUser.avatar}
+                      alt=""
+                      className="rounded-full overflow-hidden w-14 h-14 inline-block"
+                    />
+                  </div>
+                  <div className="user-comment">
+                    <p className="font-bold text-xl">{currentUser.name}</p>
+                    <p className="text-base text-gray-400 italic">
+                      {date.getDate()}/{date.getMonth() + 1}/
+                      {date.getFullYear()}
+                    </p>
+                    <input
+                      type="text"
+                      className="border border-gray-300 border-solid block p-3 rounded-lg lg:w-96 h-20"
+                      style={{ textAlign: "start", verticalAlign: "0px" }}
+                      {...register("noiDung")}
+                    />
+                    <button
+                      type="submit"
+                      className="p-3 border border-solid rounded-lg py-3 mt-3 hover:bg-gray-200 font-bold duration-300"
+                    >
+                      Add Comment
+                    </button>
+                  </div>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>

@@ -1,6 +1,13 @@
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { dispatchType } from "./configStore";
-import { http, httpNonAuth, TOKEN, TOKEN_CYBERSOFT } from "../util/config";
+import {
+  http,
+  httpNonAuth,
+  setStoreJson,
+  TOKEN,
+  TOKEN_CYBERSOFT,
+} from "../util/config";
+import Swal from "sweetalert2";
 
 export interface Room {
   id: number;
@@ -44,6 +51,14 @@ export interface LocationState {
   comments: Comment[];
   roomByLocation: Room[];
 }
+export interface BookRoom {
+  id: number;
+  maPhong: any;
+  ngayDen: string;
+  ngayDi: string;
+  soLuongKhach: number;
+  maNguoiDung: number;
+}
 const initialState: LocationState = {
   location: [],
   rooms: [],
@@ -86,11 +101,11 @@ export default locationReducer.reducer;
 
 //Get locationn
 
-export const getLocationAPI = () => {
+export const getLocationAPI = async () => {
   return async (dispatch: dispatchType) => {
     const res = await httpNonAuth.get("/api/vi-tri");
-    console.log(res.data.content);
     if (res) {
+      setStoreJson("location", res.data.content);
       const action = locationAction(res.data.content);
       dispatch(action);
     }
@@ -98,10 +113,9 @@ export const getLocationAPI = () => {
 };
 
 // Get room
-export const getRoomAPI = () => {
+export const getRoomAPI = async () => {
   return async (dispatch: dispatchType) => {
     const res = await httpNonAuth.get("/api/phong-thue");
-    console.log(res.data.content);
     if (res) {
       const action = roomAction(res.data.content);
       dispatch(action);
@@ -109,10 +123,9 @@ export const getRoomAPI = () => {
   };
 };
 // Get room detail
-export const getRoomDetailAPI = (id: any) => {
+export const getRoomDetailAPI = async (id: any) => {
   return async (dispatch: Dispatch) => {
     const res = await httpNonAuth.get(`api/phong-thue/${id}`);
-    console.log(res.data.content);
     if (res) {
       const action = roomDetailAction(res.data.content);
       dispatch(action);
@@ -121,12 +134,11 @@ export const getRoomDetailAPI = (id: any) => {
 };
 
 // Get comment detail
-export const getCommentAPI = (id: any) => {
+export const getCommentAPI = async (id: any) => {
   return async (dispatch: Dispatch) => {
     const res = await httpNonAuth.get(
       `/api/binh-luan/lay-binh-luan-theo-phong/${id}`
     );
-    console.log(res.data.content);
     if (res) {
       const action = getCommentAction(res.data.content);
       dispatch(action);
@@ -135,15 +147,47 @@ export const getCommentAPI = (id: any) => {
 };
 
 // Get room by location
-export const getRoomByLocation = (maViTri: any) => {
+export const getRoomByLocation = async (maViTri: any) => {
   return async (dispatch: Dispatch) => {
     const res = await httpNonAuth.get(
       `/api/phong-thue/lay-phong-theo-vi-tri?maViTri=${maViTri}`
     );
-    console.log(res.data.content);
     if (res) {
       const action = getRoomAction(res.data.content);
       dispatch(action);
     }
   };
+};
+
+// Book room
+export const bookRoom = async (data: any) => {
+  const res = await httpNonAuth.post("/api/dat-phong", data);
+  if (res) {
+    Swal.fire({
+      icon: "success",
+      text: "Đặt phòng thành công",
+    });
+  }
+};
+export const Toast = Swal.mixin({
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
+  },
+});
+
+// Add commet
+export const addComment = async (data: any) => {
+  const res = await http.post("/api/binh-luan", data);
+  if (res) {
+    Toast.fire({
+      icon: "success",
+      title: "Thêm bình luận thành công",
+    });
+  }
 };

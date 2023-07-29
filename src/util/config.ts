@@ -1,13 +1,14 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { history } from "../index";
-import swal from 'sweetalert';
+import swal from "sweetalert2";
+import Swal from "sweetalert2";
 //setup hằng số
 export const DOMAIN = "https://airbnbnew.cybersoft.edu.vn";
 export const TOKEN = "accessToken";
 export const USER_LOGIN = "userLogin";
 export const USER_PROFILE = "userProfile";
 export const TOKEN_CYBERSOFT = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA0NSIsIkhldEhhblN0cmluZyI6IjA4LzEyLzIwMjMiLCJIZXRIYW5UaW1lIjoiMTcwMTk5MzYwMDAwMCIsIm5iZiI6MTY3MjA3NDAwMCwiZXhwIjoxNzAyMTQxMjAwfQ.1MKFgiR_REeXZ8RKBhPFQLyitVek8kDJ3u1JPaCB1MU`;
-
+export const locationList = `location`;
 export const { getStoreJson, setStoreJson, getStore, setStore } = {
   getStoreJson: (name: string): any => {
     if (localStorage.getItem(name)) {
@@ -50,27 +51,29 @@ httpNonAuth.interceptors.request.use(
     return Promise.reject(err);
   }
 );
-httpNonAuth.interceptors.response.use(res => {
-  return res
-}, err => {
-  if (err.response?.status == 400 || err.response?.status == 404) {
-    swal({
-      title: "Sai Email hoặc mật khẩu",
-      icon: "warning"
-    })
+httpNonAuth.interceptors.response.use(
+  (res) => {
+    return res;
+  },
+  (err) => {
+    if (err.response?.status == 400 || err.response?.status == 404) {
+      Swal.fire({
+        title: "Sai Email hoặc mật khẩu",
+        icon: "warning",
+      });
+    }
+    if (err.response?.status == 401) {
+      Swal.fire({
+        title: "Vui lòng đăng nhập trước !",
+      });
+    }
+    if (err.response?.status == 500) {
+      Swal.fire({
+        title: err.response.data.message,
+      });
+    }
   }
-  if (err.response?.status == 401) {
-    swal({
-      title: "Vui lòng đăng nhập trước !"
-    })
-
-  }
-  if (err.response?.status == 500) {
-    swal({
-      title: (err.response.data.message)
-    })
-  }
-})
+);
 // http.interceptors.request.use((config: any) => {
 //     config.headers = { ...config.headers }
 //     let token = getStoreJson(USER_LOGIN)?.accessToken;
@@ -81,16 +84,24 @@ httpNonAuth.interceptors.response.use(res => {
 //     return Promise.reject(err)
 // });
 http.interceptors.request.use(
-  (request: any) => {
-    request.headers = { ...request.headers };
-    if (getStoreJson(USER_LOGIN)) {
-      request.headers = {
-        ...request.headers,
-        Authorization: `Bearer ` + getStoreJson(USER_LOGIN).accessToken,
-      };
-    }
-    return request;
+  (config: any) => {
+    config.baseURL = DOMAIN;
+    config.headers = { ...config.headers };
+    config.headers.tokenCybersoft = `${TOKEN_CYBERSOFT}`;
+    config.headers.token = getStoreJson(USER_LOGIN).token;
+    return config;
   },
+  // (request: any) => {
+  //   request.headers = { ...request.headers };
+  //   if (getStoreJson(USER_LOGIN)) {
+  //     request.headers = {
+  //       ...request.headers,
+  //       Authorization: `Bearer ` + getStoreJson(USER_LOGIN).token,
+  //       tokenCybersoft = `${TOKEN_CYBERSOFT}`;
+  //     };
+  //   }
+  //   return request;
+  // },
   (err) => {
     return Promise.reject(err);
   }

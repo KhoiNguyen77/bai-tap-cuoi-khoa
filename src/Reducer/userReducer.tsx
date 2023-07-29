@@ -11,7 +11,7 @@ import { formValue } from "../Pages/DangNhap";
 import { dispatchType } from "./configStore";
 import { formRegister } from "../Pages/DangKy";
 import { history } from "..";
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 
 
 interface UserLogin {
