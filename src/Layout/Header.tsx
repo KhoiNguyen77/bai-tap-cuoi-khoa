@@ -23,43 +23,10 @@ import { USER_LOGIN, USER_PROFILE, getStoreJson } from "../util/config";
 import { history } from "..";
 import { LoginActionApi, getProfileApi, loginAction, profileAction } from "../Reducer/userReducer";
 import { RootState } from "../Reducer/configStore";
-import { formRegister } from "../Pages/DangKy";
-import { formValue } from "../Pages/DangNhap";
-import { formProfile } from "../Pages/Profile";
+
 type Props = {};
 
-const items: MenuProps["items"] = [
-  {
-    key: "1",
-    label:
-      <NavLink to="/dang-ky">Đăng ký</NavLink>,
-  },
-  {
-    key: "2",
-    label: (
-      <NavLink to="/dang-nhap">
-        <h3>Đăng Nhập</h3>
-      </NavLink>
-    ),
-  },
-  {
-    key: "3",
-    label: <NavLink to="">Cho Thuê Nhà</NavLink>,
-  },
-  {
-    key: "4",
-    label: <NavLink to="">Tổ chức trách nhiệm</NavLink>,
-  },
-  {
-    key: "5",
-    label: (
 
-      <NavLink to="">
-        <h3> Trợ giúp</h3>
-      </NavLink>
-    ),
-  },
-];
 
 
 
@@ -83,10 +50,12 @@ const Header = (props: Props) => {
   const handleLogOut = () => {
     localStorage.removeItem(USER_LOGIN);
     localStorage.removeItem(USER_PROFILE);
-    // const clearUser = loginAction(valuelogin);
-    // const clearProfile = profileAction(valueProfile);
-    // dispatch(clearUser);
-    // dispatch(clearProfile);
+    let valuelogin: any = null;
+    let valueProfile: any = null;
+    const clearUser = loginAction(valuelogin);
+    const clearProfile = profileAction(valueProfile);
+    dispatch(clearUser);
+    dispatch(clearProfile);
   };
   const onSubmit = (values: any) => {
     setOpen(false);
@@ -169,6 +138,8 @@ const Header = (props: Props) => {
                     Trở thành chủ nhà
                   </div>
                 </a>
+
+                {/* Profile */}
                 <div className="hidden relative lg:block">
                   <button
                     type="button"
@@ -266,41 +237,54 @@ const Header = (props: Props) => {
                   transition-all duration-300 invisible  opacity-0 
                   ">
                     <ul className="py-2 px-3 flex flex-col  ">
-                      <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
-                        <NavLink to="/dang-nhap">
+
+                      <NavLink to="/">
+                        <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
                           <h3>Tin nhắn</h3>
-                        </NavLink>
-                      </li>
-                      <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
-                        <NavLink to="/dang-ky">
+                        </li>
+                      </NavLink>
+
+
+                      <NavLink to="/">
+                        <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
                           <h3>Chuyến đi</h3>
-                        </NavLink>
-                      </li>
-                      <li className="cursor-pointer bg-slate-50 p-3 border-b-2  hover:bg-slate-200 text-black ">
-                        <NavLink to="/thong-tin-ca-nhan">
+                        </li>
+                      </NavLink>
+
+
+                      <NavLink to="/thong-tin-ca-nhan/:id">
+                        <li className="cursor-pointer bg-slate-50 p-3 border-b-2  hover:bg-slate-200 text-black ">
                           <h3>Thông tin cá nhân</h3>
-                        </NavLink>
+                        </li>
+                      </NavLink>
 
-                      </li>
 
-                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
-                        <NavLink to="">Cho Thuê Nhà</NavLink>
-                      </li>
-                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
-                        <NavLink to="">Tổ Chức trách nhiệm</NavLink>
-                      </li>
-                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
-                        <NavLink to="">Trợ giúp</NavLink>
 
-                      </li>
 
-                      <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
-                        <NavLink to="/dang-nhap" onClick={() => {
-                          handleLogOut();
-                        }}>Đăng xuất</NavLink>
+                      <NavLink to="/">
+                        <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                          Cho Thuê Nhà
+                        </li>
+                      </NavLink>
+                      <NavLink to="/">
+                        <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                          Tổ Chức trách nhiệm
+                        </li>
+                      </NavLink>
+                      <NavLink to="/">
+                        <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                          Trợ giúp
+                        </li>
+                      </NavLink>
 
-                      </li>
 
+                      <NavLink to="/dang-nhap" onClick={() => {
+                        handleLogOut();
+                      }}>
+                        <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
+                          Đăng xuất
+                        </li>
+                      </NavLink>
                     </ul>
                   </div>
                 ) : (
@@ -310,41 +294,42 @@ const Header = (props: Props) => {
         peer-focus:top-12 right-0  peer-focus:opacity-100 peer-focus:visible 
         transition-all duration-300 invisible  opacity-0 
         ">
-                    <ul className="py-2 px-3 flex flex-col gap-2 ">
+                    <ul className="py-2 px-3 flex flex-col  ">
                       <NavLink to="/dang-nhap">
-                        <li className="cursor-pointer bg-slate-100   p-4   rounded-md  hover:bg-slate-200 text-black">
+                        <li className="cursor-pointer bg-slate-50   p-4   rounded-md  hover:bg-slate-200 text-black">
                           Đăng Nhập
                         </li>
                       </NavLink>
                       <NavLink to="/dang-ky">
-                        <li className="cursor-pointer bg-slate-100   p-4   rounded-md  hover:bg-slate-200 text-black">
+                        <li className="cursor-pointer bg-slate-50   p-4   rounded-md  hover:bg-slate-200 text-black">
                           <h3>Đăng ký</h3>
                         </li>
                       </NavLink>
-                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
-                        <NavLink to="">Cho Thuê Nhà</NavLink>
-                      </li>
-                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
-                        <NavLink to="">Tổ Chức trách nhiệm</NavLink>
-                      </li>
-                      <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
-                        <NavLink to="">Trợ giúp</NavLink>
 
-                      </li>
+                      <NavLink to="">
+                        <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                          Cho Thuê Nhà
+                        </li>
+                      </NavLink>
+                      <NavLink to="">
+                        <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                          Tổ Chức trách nhiệm
+                        </li>
+                      </NavLink>
+                      <NavLink to="">
+                        <li className="cursor-pointer bg-slate-100 p-3  hover:bg-slate-200 text-black">
+                          Trợ giúp
+                        </li>
+                      </NavLink>
 
                     </ul>
                   </div>
                 )}
-
-
-
-
               </div>
             </div>
-
           </div>
-
         </div>
+        {/* end profile */}
         {isOpen && (
           <>
             <form
