@@ -47,7 +47,6 @@ const DangKy = (props: Props) => {
       //   role: '',
       // })
 
-
     },
     validationSchema: yup.object().shape({
       email: yup.string().required("Không đẻ được trống email!").email("Email không đúng !"),

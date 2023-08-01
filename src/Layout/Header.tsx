@@ -51,8 +51,8 @@ const Header = (props: Props) => {
   let [isOpen, setOpen] = useState(false);
   let [heightState, setHeight] = useState("0");
   const { register, handleSubmit } = useForm();
+  const { userProfile } = useSelector((state: RootState) => state.userReducer);
   const profile = getStoreJson(USER_LOGIN);
-
   const handleLogOut = () => {
     localStorage.removeItem(USER_LOGIN);
     localStorage.removeItem(USER_PROFILE);
@@ -181,7 +181,7 @@ const Header = (props: Props) => {
                 <button
                   type="button"
                   className="relative inline-flex items-center rounded-full border px-2 hover:shadow-lg peer  focus:text-gray-200 transition-all duration-200 "
-                  onClick={() => {}}
+                  onClick={() => { }}
                 >
                   <div className="pl-1">
                     <svg
@@ -208,10 +208,10 @@ const Header = (props: Props) => {
                     </svg>
                   </div>
                   <div className="block h-10 w-12 pl-4">
-                    {profile ? (
+                    {userProfile ? (
                       <div className="w-full h-full flex justify-center items-center">
                         <img
-                          src={profile?.avatar}
+                          src={userProfile?.avatar}
                           alt=""
                           className="w-7 h-7 rounded-full"
                         />
@@ -235,7 +235,7 @@ const Header = (props: Props) => {
                     )}
                   </div>
                 </button>
-                {profile ? (
+                {userProfile ? (
                   <div
                     className=' w-80 absolute  z-10
                   after:content-[""] after:inline-block after:absolute after:top-0 after:bg-white/40
@@ -251,13 +251,13 @@ const Header = (props: Props) => {
                         </li>
                       </NavLink>
 
-                      <NavLink to="/">
+                      <NavLink to={`/chuyen-di/${userProfile?.id}`}>
                         <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
                           <h3>Chuyến đi</h3>
                         </li>
                       </NavLink>
 
-                      <NavLink to="/thong-tin-ca-nhan/:id">
+                      <NavLink to={`/thong-tin-ca-nhan/${userProfile?.id}`}>
                         <li className="cursor-pointer bg-slate-50 p-3 border-b-2  hover:bg-slate-200 text-black ">
                           <h3>Thông tin cá nhân</h3>
                         </li>
@@ -418,7 +418,7 @@ const Header = (props: Props) => {
             </form>
           </>
         )}
-      </nav>
+      </nav >
     </>
   );
 };

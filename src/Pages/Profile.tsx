@@ -4,6 +4,9 @@ import { useEffect } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { RootState, dispatchType } from "../Reducer/configStore";
 import { getProfileApi } from "../Reducer/userReducer";
+import { Button, Divider, Radio } from "antd";
+import UpdateProfile from "../Layout/UpdateProfile";
+import UpdateAvatar from "../Layout/UpdateAvatar";
 
 type Props = {};
 export interface formProfile {
@@ -26,33 +29,34 @@ const Profile = (props: Props) => {
     const action = await getProfileApi(id);
     dispatch(action);
   };
+
+
+
   console.log(id);
   useEffect(() => {
     getUserProfile(id);
   }, [id]);
   return (
     <div>
-      <div className="  mt-10 flex flex-wrap items-center  justify-center  ">
-        <div className=" sticky top-32 container lg:w-1/5 xl:w-2/7 sm:w-full md:w-2/3    bg-white  shadow-lg    transform   duration-200 easy-in-out ">
-          <div className=" h-32 overflow-hidden justify-start">
+      <div className=" flex flex-wrap items-start justify-center  ">
+        <div className=" sticky top-1 container lg:w-1/5 xl:w-2/7 sm:w-full md:w-2/3    bg-white  shadow-lg    transform   duration-200 easy-in-out ">
+          <div className=" h-32 overflow-hidden justify-end">
             <img
-              className="w-full"
-              src="https://images.unsplash.com/photo-1605379399642-870262d3d051?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
+              className="w-full i"
+              src="../images/airbnb.png"
             />
           </div>
-          <div className="flex justify-center px-5  -mt-12">
+          <div className="flex justify-center -mt-12">
             <img
               className="h-32 w-32 bg-white p-2 rounded-full   "
-              src="https://a0.muscache.com/defaults/user_pic-50x50.png?v=3"
+              src={userProfile?.avatar ? userProfile?.avatar : "https://a0.muscache.com/defaults/user_pic-50x50.png?v=3"}
             />
           </div>
           <div className=" ">
             <div className="text-center px-14">
               <p className="text-gray-400 mt-2">
                 {" "}
-                <NavLink to="" className="text-blue-300 hover:underline">
-                  Cập nhật hình ảnh
-                </NavLink>
+                <UpdateAvatar />
               </p>
 
               <h2 className="text-gray-800 text-1xl font-bold">
@@ -84,65 +88,86 @@ const Profile = (props: Props) => {
           </div>
         </div>
         <div className="max-w-4xl  bg-white w-full items-center ">
-          <div>
-            <div className="md:grid md:grid-cols-2  hover:bg-gray-50 md:space-y-0 space-y-1 p-4 border mb-3">
+          <div className="">
+            <div className="md:grid md:grid-cols-2 border-2    hover:bg-gray-50 md:space-y-0 space-y-1 p-8   mb-3">
               <div className="border-b-2">
                 <h3>Họ và tên</h3>
-
-                <p className="text-gray-500">Jane Doe</p>
               </div>
-
-              <NavLink to="" className="text-blue-300 hover:underline">
-                Thay đổi
-              </NavLink>
+              <div className="">
+                <h2 className="text-gray-500 text-lg">{userProfile?.name}</h2>
+              </div>
             </div>
-            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4 border-b mb-3">
+            <div className="md:grid md:grid-cols-2 border-2   hover:bg-gray-50 md:space-y-0 space-y-1 p-8   mb-3">
+              <div className="border-b-2">
+                <h3>Giới tính</h3>
+              </div>
+              <div className="">
+                <Radio.Group id='gender' name='gender' defaultValue={true} disabled={true} value={userProfile?.gender}>
+                  <Radio value={true} id='male'>Nam</Radio>
+                  <Radio value={false} id='female'>Nữ</Radio>
+                </Radio.Group>
+                <h2 className="text-gray-500 text-lg"></h2>
+              </div>
+            </div>
+
+            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-8 border-b mb-3">
               <div>
                 <h3>Ngày sinh</h3>
 
-                <p className="text-gray-500">{userProfile?.birthday}</p>
+
+              </div>
+              <div className="">
+                <h2 className="text-gray-500 text-lg">{userProfile?.birthday}</h2>
               </div>
 
-              <NavLink to="" className="text-blue-300 hover:underline">
-                Thay đổi
-              </NavLink>
             </div>
-            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4 border-b mb-3">
+            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-8 border-b mb-3">
               <div>
                 <h3>Đia chỉ Email</h3>
 
-                <p className="text-gray-500">{userProfile?.email}</p>
+
+              </div>
+              <div className="">
+                <h2 className="text-gray-500 text-lg">{userProfile?.email}</h2>
               </div>
 
-              <NavLink to="" className="text-blue-300 hover:underline">
-                Thay đổi
-              </NavLink>
             </div>
-            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4 border-b mb-3">
+            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-8 border-b mb-3">
               <div>
                 <h3>Số điện thoại</h3>
 
-                <p className="text-gray-500">0{userProfile?.phone}</p>
+
+              </div>
+              <div className="">
+                <h2 className="text-gray-500 text-lg">{userProfile?.phone}</h2>
               </div>
 
-              <NavLink to="" className="text-blue-300 hover:underline">
-                Thay đổi
-              </NavLink>
             </div>
-            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4 border-b mb-3">
+            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-8 border-b mb-3">
               <div>
                 <h3>Địa chỉ nhà</h3>
 
-                <p className="text-gray-500">nguyễn chí thanh</p>
+
+              </div>
+              <div className="">
+                <h2 className="text-gray-500 text-lg">Cybersoft cao thắng</h2>
               </div>
 
-              <NavLink to="" className="text-blue-300 hover:underline">
-                Thay đổi
-              </NavLink>
             </div>
-            <div className="md:grid md:grid-cols-2 hover:bg-gray-50 md:space-y-0 space-y-1 p-4">
-              <p className="text-gray-600">Attachments</p>
+
+            <div className="md:grid md:grid-cols-2">
+              <div>
+
+              </div>
+
+              <div className="text-blue-300 hover:underline">
+                {/* <NavLink to="/update-thong-tin" className="text-blue-300 hover:underline">
+                <Button>Thay đổi</Button>
+              </NavLink> */}
+                <UpdateProfile />
+              </div>
             </div>
+
           </div>
         </div>
       </div>

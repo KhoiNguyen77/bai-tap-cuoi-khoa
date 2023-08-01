@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { history } from "../index";
-import swal from "sweetalert2";
+
 import Swal from "sweetalert2";
 //setup hằng số
 export const DOMAIN = "https://airbnbnew.cybersoft.edu.vn";
@@ -51,6 +51,7 @@ httpNonAuth.interceptors.request.use(
     return Promise.reject(err);
   }
 );
+
 httpNonAuth.interceptors.response.use(
   (res) => {
     return res;
@@ -137,7 +138,7 @@ http.interceptors.response.use(
     //     history.push('/login');
     // }
     if (err.response?.status == 400 || err.response?.status == 404) {
-      window.alert("123");
+      window.alert("lỗi");
     }
     if (err.response?.status === 403) {
       alert("Không đủ quyền truy cập vào trang này !");

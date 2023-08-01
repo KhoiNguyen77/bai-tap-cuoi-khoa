@@ -16,6 +16,9 @@ import "./index.css";
 import DangKy from "./Pages/DangKy";
 import DangNhap from "./Pages/DangNhap";
 import QuanLyDatPhong from "./Pages/QuanLyDatPhong";
+import UpdateProfile from "./Layout/UpdateProfile";
+import UpdateAvatar from "./Layout/UpdateAvatar";
+import ChuyenDi from "./Pages/ChuyenDi";
 
 export const history: History | any = createBrowserHistory();
 const root = ReactDOM.createRoot(
@@ -42,6 +45,18 @@ root.render(
           <Route
             path="/thong-tin-ca-nhan/:id"
             element={<Profile></Profile>}
+          ></Route>
+          <Route
+            path="/update-thong-tin/:id"
+            element={<UpdateProfile></UpdateProfile>}
+          ></Route>
+          <Route
+            path="/update-avatar"
+            element={<UpdateAvatar></UpdateAvatar>}
+          ></Route>
+          <Route
+            path="/chuyen-di/:id"
+            element={<ChuyenDi></ChuyenDi>}
           ></Route>
         </Route>
 
