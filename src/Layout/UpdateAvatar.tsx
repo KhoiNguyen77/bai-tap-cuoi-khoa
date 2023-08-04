@@ -30,13 +30,16 @@ const UpdateAvatar = (props: Props) => {
         setOpen(false);
     };
     const onSubmit = (values: UploadFileAvatar) => {
-        const payload = {
+        let payload = {
             ...values,
             avatar: values.avatar[0],
         };
-        console.log(payload);
-        dispatch(updateAvatarApi(payload))
-
+        console.log(payload.avatar);
+        let formData = new FormData();
+        formData.append('formFile', payload.avatar);
+        console.log(formData.get('formFile'));
+        const action = updateAvatarApi(formData);
+        dispatch(action)
     };
     const onError = (values: any) => {
         console.log(values);

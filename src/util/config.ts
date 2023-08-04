@@ -92,6 +92,7 @@ http.interceptors.request.use(
     config.headers.token = getStoreJson(USER_LOGIN).token;
     return config;
   },
+
   // (request: any) => {
   //   request.headers = { ...request.headers };
   //   if (getStoreJson(USER_LOGIN)) {

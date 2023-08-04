@@ -208,7 +208,7 @@ const Header = (props: Props) => {
                     </svg>
                   </div>
                   <div className="block h-10 w-12 pl-4">
-                    {userProfile ? (
+                    {profile ? (
                       <div className="w-full h-full flex justify-center items-center">
                         <img
                           src={userProfile?.avatar}
@@ -235,7 +235,7 @@ const Header = (props: Props) => {
                     )}
                   </div>
                 </button>
-                {userProfile ? (
+                {profile ? (
                   <div
                     className=' w-80 absolute  z-10
                   after:content-[""] after:inline-block after:absolute after:top-0 after:bg-white/40

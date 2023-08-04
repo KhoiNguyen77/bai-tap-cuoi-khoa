@@ -7,6 +7,7 @@ import { getProfileApi } from "../Reducer/userReducer";
 import { Button, Divider, Radio } from "antd";
 import UpdateProfile from "../Layout/UpdateProfile";
 import UpdateAvatar from "../Layout/UpdateAvatar";
+import { USER_PROFILE, getStoreJson } from "../util/config";
 
 type Props = {};
 export interface formProfile {
@@ -23,7 +24,7 @@ export interface formProfile {
 const Profile = (props: Props) => {
   const { userProfile } = useSelector((state: RootState) => state.userReducer);
   const dispatch: dispatchType = useDispatch();
-
+  const profile = getStoreJson(USER_PROFILE);
   const { id } = useParams();
   const getUserProfile = async (id: any) => {
     const action = await getProfileApi(id);

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
+  TOKEN_CYBERSOFT,
   USER_LOGIN,
   USER_PROFILE,
   getStoreJson,
@@ -15,6 +16,7 @@ import { history } from "..";
 import Swal from "sweetalert2";
 import { formUpdate } from "../Layout/UpdateProfile";
 import { formProfile } from "../Pages/Profile";
+import axios from "axios";
 
 
 
@@ -74,7 +76,7 @@ interface UserState {
 const initialState: UserState = {
   userRegister: null,
   userLogin: getStoreJson(USER_LOGIN) || null,
-  userProfile: null,
+  userProfile: getStoreJson(USER_PROFILE) || null,
   userUpdate: null,
   userAvatar: null,
   userRoom: null
@@ -157,30 +159,45 @@ export const getProfileApi = (id: number) => {
   }
 }
 //update 
-export const updateProfileApi = (updateUser: formUpdate) => {
+export const updateProfileApi = async (updateUser: formUpdate) => {
   return async (dispatch: dispatchType) => {
-    const res = await httpNonAuth.put(`/api/users/${updateUser.id}`, updateUser.id)
-    console.log(res.data)
+    const res = await httpNonAuth.put(`/api/users/${updateUser.id}`, updateUser)
+    console.log(res)
     if (res) {
       console.log(res.data)
       const action = updateProfileAction(updateUser);
       dispatch(action);
-      Swal.fire("Update thông tin thành công");
+      setStoreJson(USER_PROFILE, res.data.content);
+      Swal.fire({
+        icon: "success",
+        text: "Cập nhật thông tin thành công",
+      });
 
     }
   }
 }
 
-export const updateAvatarApi = (value: any) => {
+export const updateAvatarApi = (formData: any) => {
   return async (dispatch: dispatchType) => {
-    const res = await httpNonAuth.post('api/users/upload-avatar', value)
-    if (res) {
+    // const res = await http.post('api/users/upload-avatar', value)
+
+    const res = await axios.post('/api/users/upload-avatar', {
+      body: {
+        formFile: formData
+      }
+    }, {
+      headers: {
+        token: getStoreJson(USER_LOGIN).token,
+        tokenCybersoft: `${TOKEN_CYBERSOFT}`
+      }
+    }).then(res => {
       console.log(res.data)
       const action: PayloadAction<UserProfile> = updateAvatarAction(res.data.content);
       dispatch(action);
       Swal.fire("Update avatar thành công");
-
-    }
+    }).catch(err => {
+      console.log(err);
+    })
   }
 }
 //
