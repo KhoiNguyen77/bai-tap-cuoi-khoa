@@ -19,6 +19,8 @@ import QuanLyDatPhong from "./Pages/QuanLyDatPhong";
 import UpdateProfile from "./Layout/UpdateProfile";
 import UpdateAvatar from "./Layout/UpdateAvatar";
 import ChuyenDi from "./Pages/ChuyenDi";
+import QuanLy from "./Pages/QuanLy";
+import QuanLyPhong from "./Pages/QuanLyPhong";
 
 export const history: History | any = createBrowserHistory();
 const root = ReactDOM.createRoot(
@@ -58,8 +60,16 @@ root.render(
             path="/chuyen-di/:id"
             element={<ChuyenDi></ChuyenDi>}
           ></Route>
-        </Route>
 
+        </Route>
+        <Route
+          path="/quan-ly"
+          element={<QuanLy></QuanLy>}
+        ></Route>
+        <Route
+          path="/quan-ly-phong"
+          element={<QuanLyPhong></QuanLyPhong>}
+        ></Route>
         <Route path="/dang-ky" element={<DangKy></DangKy>}></Route>
         <Route path="/dang-nhap" element={<DangNhap></DangNhap>}></Route>
       </Routes>
