@@ -182,13 +182,36 @@ export const Toast = Swal.mixin({
 });
 
 // Add comment
-export const addComment = async (data: any) => {
-  const res = await http.post("/api/binh-luan", data);
-  console.log(res.data.content);
-  if (res) {
-    Toast.fire({
-      icon: "success",
-      title: "Thêm bình luận thành công",
-    });
+// export const addComment = async (data: any) => {
+//   const res = await http.post("/api/binh-luan", data);
+//   console.log(res.data.content);
+//   if (res) {
+//     Toast.fire({
+//       icon: "success",
+//       title: "Thêm bình luận thành công",
+//     });
+//   }
+// };
+
+//Add comment
+export const addComment = (data: any) => {
+  return async (dispatch: Dispatch) => {
+    const res = await http.post("/api/binh-luan", data);
+    console.log(res.data.content);
+    if (res) {
+      Toast.fire({
+        icon: "success",
+        title: "Thêm bình luận thành công",
+      });
+
+      const comment = await httpNonAuth.get(
+        `/api/binh-luan/lay-binh-luan-theo-phong/${res.data.content.maPhong}`
+      );
+
+      dispatch(getCommentAction(comment.data.content))
+    }
   }
 };
+
+
+

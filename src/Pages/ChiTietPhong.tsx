@@ -113,7 +113,8 @@ const ChiTietPhong = (props: Props) => {
       });
       return;
     } else {
-      addComment(dataBack);
+      const action: any = await addComment(dataBack)
+      dispatch(action);
     }
   };
   return (
