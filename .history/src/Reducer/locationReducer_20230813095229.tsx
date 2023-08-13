@@ -100,7 +100,6 @@ export const {
   roomDetailAction,
   getCommentAction,
   getRoomAction,
-  getBookingAction
 } = locationReducer.actions;
 
 export default locationReducer.reducer;
@@ -240,22 +239,7 @@ export const getBookingList = () => {
     const res = await httpNonAuth.get('api/dat-phong');
     if (res) {
       setStoreJson("bookingList", res.data.content);
-      dispatch(getBookingAction(res.data.content));
-    }
-  }
-}
-
-export const deleteBookingById = (id: number) => {
-  return async (dispatch: dispatchType) => {
-    const res = await httpNonAuth.delete(`api/dat-phong/${id}`);
-    if (res) {
-      Toast.fire({
-        icon: "success",
-        title: "Xoá đặt phòng thành công",
-      });
-      const newBookingList = await httpNonAuth.get('api/dat-phong');
-      setStoreJson("bookingList", newBookingList.data.content);
-      dispatch(getBookingAction(newBookingList.data.content));
+      dispatch()
     }
   }
 }

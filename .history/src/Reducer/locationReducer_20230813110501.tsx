@@ -254,8 +254,8 @@ export const deleteBookingById = (id: number) => {
         title: "Xoá đặt phòng thành công",
       });
       const newBookingList = await httpNonAuth.get('api/dat-phong');
-      setStoreJson("bookingList", newBookingList.data.content);
-      dispatch(getBookingAction(newBookingList.data.content));
+      setStoreJson("rooms", newBookingList.data.content);
+      dispatch(roomAction(newBookingList.data.content));
     }
   }
 }

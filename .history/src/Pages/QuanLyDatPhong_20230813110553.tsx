@@ -14,22 +14,31 @@ type Props = {};
 
 const QuanLyDatPhong: React.FC = (props: Props) => {
   const { userProfile } = useSelector((state: RootState) => state.userReducer);
-  const {bookingList} = useSelector((state: RootState)=> state.locationReducer);
   const dispatch = useDispatch();
   const getBooking = async () => {
     const action: any = await getBookingList();
     dispatch(action);
   }
-  let data: DataType[] = [...getStoreJson("bookingList")];
+  const data: DataType[] = getStoreJson("bookingList");
   data.forEach(row => {
     const convertStringNgayDen = new Date(row.ngayDen);
     const convertStringNgayDi = new Date(row.ngayDi);
     row.ngayDen = `${convertStringNgayDen.getDate()}/${convertStringNgayDen.getMonth()-1}/${convertStringNgayDen.getFullYear()}`;
     row.ngayDi = `${convertStringNgayDi.getDate()}/${convertStringNgayDi.getMonth()-1}/${convertStringNgayDi.getFullYear()}`;
   })
-
-  const deleteBooking = async (id:number) => {
-    const action: any = await deleteBookingById(id);
+  if (userProfile?.role != "ADMIN") {
+    Swal.fire({
+      icon: "warning",
+      text: `Vui lòng đăng nhập bằng tài khoản Admin để tiếp tuc`,
+      confirmButtonText: "OK"
+    }).then((res) => {
+      if (res['isConfirmed']){
+        history.push('/dang-nhap');
+      }
+    });
+  }
+  const deleteBooking = (id:number) => {
+    const action: any = deleteBookingById(id);
     dispatch(action);
   }
   interface DataType {
@@ -37,7 +46,7 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
     maPhong: number,
     ngayDen: string,
     ngayDi: string,
-    soLuongKhach: number,
+    soluongKhach: number,
     maNguoiDung: number
   }
   
@@ -105,17 +114,6 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
 
   useEffect(()=> {
     getBooking();
-    if (userProfile?.role != "ADMIN") {
-      Swal.fire({
-        icon: "warning",
-        text: `Vui lòng đăng nhập bằng tài khoản Admin để tiếp tuc`,
-        confirmButtonText: "OK"
-      }).then((res) => {
-        if (res['isConfirmed']){
-          history.push('/dang-nhap');
-        }
-      });
-    }
   })
   return (
     <div>

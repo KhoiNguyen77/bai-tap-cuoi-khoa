@@ -3,7 +3,7 @@ import { RootState } from "../Reducer/configStore";
 import Swal from "sweetalert2";
 import { history } from "../index";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteBookingById, getBookingList } from "../Reducer/locationReducer";
+import { getBookingList } from "../Reducer/locationReducer";
 import { Button, Table, Space } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { getStoreJson } from "../util/config";
@@ -14,30 +14,35 @@ type Props = {};
 
 const QuanLyDatPhong: React.FC = (props: Props) => {
   const { userProfile } = useSelector((state: RootState) => state.userReducer);
-  const {bookingList} = useSelector((state: RootState)=> state.locationReducer);
   const dispatch = useDispatch();
   const getBooking = async () => {
     const action: any = await getBookingList();
     dispatch(action);
   }
-  let data: DataType[] = [...getStoreJson("bookingList")];
+  const data: DataType[] = getStoreJson("bookingList");
   data.forEach(row => {
     const convertStringNgayDen = new Date(row.ngayDen);
     const convertStringNgayDi = new Date(row.ngayDi);
     row.ngayDen = `${convertStringNgayDen.getDate()}/${convertStringNgayDen.getMonth()-1}/${convertStringNgayDen.getFullYear()}`;
     row.ngayDi = `${convertStringNgayDi.getDate()}/${convertStringNgayDi.getMonth()-1}/${convertStringNgayDi.getFullYear()}`;
   })
-
-  const deleteBooking = async (id:number) => {
-    const action: any = await deleteBookingById(id);
-    dispatch(action);
+  if (userProfile?.role != "ADMIN") {
+    Swal.fire({
+      icon: "warning",
+      text: `Vui lòng đăng nhập bằng tài khoản Admin để tiếp tuc`,
+      confirmButtonText: "OK"
+    }).then((res) => {
+      if (res['isConfirmed']){
+        history.push('/dang-nhap');
+      }
+    });
   }
   interface DataType {
-    id: number;
+    id: React.Key
     maPhong: number,
     ngayDen: string,
     ngayDi: string,
-    soLuongKhach: number,
+    soluongKhach: number,
     maNguoiDung: number
   }
   
@@ -84,7 +89,8 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
          }}>Xem</button>
          <button className="p-3 bg-green-300 mx-3 my-3 rounded-md hover:bg-green-500">Sửa</button>
          <button className="p-3 bg-red-300 mx-3 my-3 rounded-md hover:bg-red-500" onClick={()=> {
-          deleteBooking(record.id);
+          console.log(record.id);
+          
          }}>Xoá</button>
         </Space>
       ),
@@ -105,17 +111,6 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
 
   useEffect(()=> {
     getBooking();
-    if (userProfile?.role != "ADMIN") {
-      Swal.fire({
-        icon: "warning",
-        text: `Vui lòng đăng nhập bằng tài khoản Admin để tiếp tuc`,
-        confirmButtonText: "OK"
-      }).then((res) => {
-        if (res['isConfirmed']){
-          history.push('/dang-nhap');
-        }
-      });
-    }
   })
   return (
     <div>

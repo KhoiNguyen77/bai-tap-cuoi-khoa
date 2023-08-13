@@ -85,6 +85,7 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
          <button className="p-3 bg-green-300 mx-3 my-3 rounded-md hover:bg-green-500">Sửa</button>
          <button className="p-3 bg-red-300 mx-3 my-3 rounded-md hover:bg-red-500" onClick={()=> {
           deleteBooking(record.id);
+          start()
          }}>Xoá</button>
         </Space>
       ),

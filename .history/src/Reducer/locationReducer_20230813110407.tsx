@@ -245,7 +245,7 @@ export const getBookingList = () => {
   }
 }
 
-export const deleteBookingById = (id: number) => {
+export const deleteBooking = (id: number) => {
   return async (dispatch: dispatchType) => {
     const res = await httpNonAuth.delete(`api/dat-phong/${id}`);
     if (res) {
@@ -254,8 +254,8 @@ export const deleteBookingById = (id: number) => {
         title: "Xoá đặt phòng thành công",
       });
       const newBookingList = await httpNonAuth.get('api/dat-phong');
-      setStoreJson("bookingList", newBookingList.data.content);
-      dispatch(getBookingAction(newBookingList.data.content));
+      setStoreJson("rooms", newBookingList.data.content);
+      dispatch(roomAction(newBookingList.data.content));
     }
   }
 }
