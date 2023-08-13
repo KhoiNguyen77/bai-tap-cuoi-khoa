@@ -72,7 +72,7 @@ const QuanLy = (props: Props) => {
         </div>
         <div className="flex-1 flex flex-wrap">
           <div
-            className="p-2 bg-white w-full md:w-60 flex flex-col md:flex hidden sticky top-0 bottom-0 left-0"
+            className="p-2 bg-white w-full md:w-60 flex flex-col md:flex sticky top-0 bottom-0 left-0"
             id="sideNav"
           >
             <nav>
