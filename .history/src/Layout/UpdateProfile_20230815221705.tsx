@@ -167,7 +167,6 @@ const UpdateProfile = (props: Props) => {
                      "
                   id="email"
                   placeholder="Email"
-                  disabled
                   defaultValue={profile?.email}
                   onChange={updateMik.handleChange}
                 />

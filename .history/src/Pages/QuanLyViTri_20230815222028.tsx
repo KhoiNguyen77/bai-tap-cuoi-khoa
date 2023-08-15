@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Button, Modal, Pagination, Radio, Space } from "antd";
 import Table, { ColumnsType } from "antd/es/table";
 import { getStoreJson } from "../util/config";
-import { deletePlaceById, getLocationAPI } from "../Reducer/locationReducer";
 type Props = {};
 interface DataType {
   id: number;
@@ -20,14 +19,6 @@ interface DataType {
 const QuanLyViTri = (props: Props) => {
   const { userProfile } = useSelector((state: RootState) => state.userReducer);
   const dispatch: dispatchType = useDispatch();
-  const deletePlace = async (id: number) => {
-    const action: any = await deletePlaceById(id);
-    dispatch(action);
-  };
-  const getLocation = async () => {
-    const action: any = await getLocationAPI();
-    dispatch(action);
-  };
   const columns: ColumnsType<DataType> = [
     {
       title: "ID",
@@ -96,7 +87,7 @@ const QuanLyViTri = (props: Props) => {
           <button
             className="p-3 bg-red-300 mx-3 my-3 rounded-md hover:bg-red-500"
             onClick={() => {
-              deletePlace(record.id);
+              // deleteUser(record.id);
             }}
           >
             Xoá
@@ -121,9 +112,6 @@ const QuanLyViTri = (props: Props) => {
   if (getStoreJson("location")) {
     data = [...getStoreJson("location")];
   }
-  useEffect(() => {
-    getLocation();
-  });
   return (
     <div>
       <table className="w-full table-auto text-sm mt-4">

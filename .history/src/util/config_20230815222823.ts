@@ -60,7 +60,7 @@ httpNonAuth.interceptors.response.use(
     return res;
   },
   (err) => {
-    if (err.response?.status == 404) {
+    if (err.response?.status == 400 || err.response?.status == 404) {
       Swal.fire({
         title: "Sai Email hoặc mật khẩu",
         icon: "warning",
@@ -69,6 +69,11 @@ httpNonAuth.interceptors.response.use(
     if (err.response?.status == 400) {
       Swal.fire({
         title: "Xóa thất bại. Vui lòng thử lại",
+        icon: "warning",
+      });
+    } if (err.response?.status == 400 || err.response?.status == 404) {
+      Swal.fire({
+        title: "Sai Email hoặc mật khẩu",
         icon: "warning",
       });
     }

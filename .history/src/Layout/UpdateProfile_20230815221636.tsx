@@ -40,7 +40,6 @@ const UpdateProfile = (props: Props) => {
     onSubmit: async (values: formUpdate) => {
       const action = await updateProfileApi(values);
       dispatch(action);
-      setOpen(false);
     },
     validationSchema: yup.object().shape({
       email: yup
@@ -167,7 +166,6 @@ const UpdateProfile = (props: Props) => {
                      "
                   id="email"
                   placeholder="Email"
-                  disabled
                   defaultValue={profile?.email}
                   onChange={updateMik.handleChange}
                 />

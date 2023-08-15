@@ -299,7 +299,7 @@ export const deletePlaceById = (id: number) => {
       });
       const newLocationn = await httpNonAuth.get("/api/vi-tri");
       setStoreJson("location", newLocationn.data.content);
-      dispatch(locationAction(newLocationn.data.content));
+      dispatch(getBookingAction(newLocationn.data.content));
     }
   };
 };

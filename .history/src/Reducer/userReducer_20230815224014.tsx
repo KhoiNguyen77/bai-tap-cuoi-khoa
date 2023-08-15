@@ -264,7 +264,14 @@ export const getRoomByUserApi = (userId: any) => {
 
 export const deleteUserById = (id: any) => {
   return async (dispatch: dispatchType) => {
-    const res = await httpNonAuth.delete(`/api/users`, id);
+    const res = await axios(`/api/users`, {
+      headers: {
+        Authorization: `${TOKEN_CYBERSOFT}`,
+      },
+      data: {
+        params: id,
+      },
+    });
     if (res) {
       Toast.fire({
         icon: "success",

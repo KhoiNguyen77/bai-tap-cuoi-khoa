@@ -262,9 +262,9 @@ export const getRoomByUserApi = (userId: any) => {
   };
 };
 
-export const deleteUserById = (id: any) => {
+export const deleteUserById = (id: number) => {
   return async (dispatch: dispatchType) => {
-    const res = await httpNonAuth.delete(`/api/users`, id);
+    const res = await http.delete(`/api/users/${id}`);
     if (res) {
       Toast.fire({
         icon: "success",

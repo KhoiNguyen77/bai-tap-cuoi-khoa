@@ -191,6 +191,11 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
   };
   return (
     <div>
+      <div className="relative max-w-md w-full">
+        <div className="absolute top-1 left-2 inline-flex items-center p-2">
+          <i className="fas fa-search text-gray-400" />
+        </div>
+      </div>
       <div className="mt-8 bg-white p-4 shadow rounded-lg w-full">
         <h2 className="text-gray-500 text-lg font-semibold pb-4">
           Thông tin người dùng

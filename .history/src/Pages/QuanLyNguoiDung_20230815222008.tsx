@@ -123,7 +123,6 @@ const QuanLyNguoiDung = (props: Props) => {
             className="p-3 bg-red-300 mx-3 my-3 rounded-md hover:bg-red-500"
             onClick={() => {
               deleteUser(record.id);
-              // console.log(record.id);
             }}
           >
             Xoá
