@@ -55,7 +55,7 @@ const DangKy = (props: Props) => {
       birthday: yup.string().required(" Không để trống ngày sinh"),
       gender: yup.string().required("Vui lòng chọn giới tính !"),
       phone: yup.string().required("").max(10, "Số điện thoại phải có 10 số"),
-      role: yup.string().required("Không để trống địa chỉ"),
+      role: yup.string().required("Không để trống "),
     })
   })
   return (
@@ -118,6 +118,7 @@ const DangKy = (props: Props) => {
                         <Radio value={false} id='female'>Female</Radio>
                       </Radio.Group>
                     </div>
+
                   </div>
                   <div className="mb-6 w-full ml-2">
                     <div className="mb-3">

@@ -14,7 +14,7 @@ import { Action } from "@reduxjs/toolkit";
 import { log } from "console";
 import { DatePicker, DatePickerProps } from "antd";
 import { useForm } from "react-hook-form";
-import { USER_PROFILE, getStoreJson } from "../util/config";
+import { USER_LOGIN, USER_PROFILE, getStoreJson } from "../util/config";
 import { NavLink } from "react-router-dom";
 import Swal from "sweetalert2";
 import { json } from "stream/consumers";
@@ -51,7 +51,7 @@ const ChiTietPhong = (props: Props) => {
   const onChangeNgayDi: DatePickerProps["onChange"] = (date) => {
     setNgayDi(date);
   };
-  const currentUser = getStoreJson(USER_PROFILE);
+  const currentUser = getStoreJson(USER_LOGIN);
   const onSubmit = async (values: any) => {
     if (currentUser == null) {
       Swal.fire({
@@ -100,9 +100,8 @@ const ChiTietPhong = (props: Props) => {
       id: currentUser.id,
       maPhong: roomDetail?.id,
       maNguoiBinhLuan: currentUser.id,
-      ngayBinhLuan: `${date.getDate()}/${
-        date.getMonth() + 1
-      }/${date.getFullYear()}`,
+      ngayBinhLuan: `${date.getDate()}/${date.getMonth() + 1
+        }/${date.getFullYear()}`,
       noiDung: values.noiDung,
       saoBinhLuan: 0,
     };

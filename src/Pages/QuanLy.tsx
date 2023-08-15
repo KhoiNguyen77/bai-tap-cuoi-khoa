@@ -5,9 +5,11 @@ import { RootState } from "../Reducer/configStore";
 import Swal from "sweetalert2";
 import { history } from "../index";
 import { useSelector } from "react-redux";
+import { USER_LOGIN, USER_PROFILE, getStoreJson } from "../util/config";
 type Props = {};
 
 const QuanLy = (props: Props) => {
+  const profile = getStoreJson(USER_PROFILE);
   const { userProfile } = useSelector((state: RootState) => state.userReducer);
   if (userProfile?.role != "ADMIN") {
     Swal.fire({
@@ -15,7 +17,7 @@ const QuanLy = (props: Props) => {
       text: `Vui lòng đăng nhập bằng tài khoản Admin để tiếp tuc`,
       confirmButtonText: "OK"
     }).then((res) => {
-      if (res['isConfirmed']){
+      if (res['isConfirmed']) {
         history.push('/dang-nhap');
       }
     });

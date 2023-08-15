@@ -20,7 +20,7 @@ const ChuyenDi = (props: Props) => {
     useEffect(() => {
         getRoomByUser();
     }, [id]);
-    
+
     return (
         <div className='container'>
             <h1 className="text-3xl font-semibold pb-4 border-b-2">Chuyến đi</h1>

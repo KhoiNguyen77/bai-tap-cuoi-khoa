@@ -210,7 +210,7 @@ const Header = (props: Props) => {
                     {profile ? (
                       <div className="w-full h-full flex justify-center items-center">
                         <img
-                          src={userProfile?.avatar}
+                          src={profile?.avatar}
                           alt=""
                           className="w-7 h-7 rounded-full"
                         />
@@ -244,11 +244,11 @@ const Header = (props: Props) => {
                   '
                   >
                     <ul className="py-2 px-3 flex flex-col  ">
-                      {userProfile?.role == "ADMIN" &&  <NavLink to="/quan-ly">
+                      {userProfile?.role == "ADMIN" && <NavLink to="/quan-ly/quan-ly-nguoi-dung">
                         <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
                           <h3>Quản lý</h3>
                         </li>
-                      </NavLink> }
+                      </NavLink>}
                       <NavLink to={`/chuyen-di/${userProfile?.id}`}>
                         <li className="cursor-pointer bg-slate-50 p-3  hover:bg-slate-200 text-black">
                           <h3>Chuyến đi</h3>

@@ -162,9 +162,7 @@ const Profile = (props: Props) => {
               </div>
 
               <div className="text-blue-300 hover:underline">
-                {/* <NavLink to="/update-thong-tin" className="text-blue-300 hover:underline">
-                <Button>Thay đổi</Button>
-              </NavLink> */}
+
                 <UpdateProfile />
               </div>
             </div>

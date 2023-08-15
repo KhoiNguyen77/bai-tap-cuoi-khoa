@@ -1,144 +1,137 @@
 import React from 'react'
-import { RootState } from "../Reducer/configStore";
+import { RootState, dispatchType } from "../Reducer/configStore";
 import Swal from "sweetalert2";
 import { history } from "../index";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch, } from "react-redux";
+import { useEffect, useState } from "react";
+import { Button, Modal, Pagination, Radio, Space } from "antd";
+import Table, { ColumnsType } from 'antd/es/table';
+import { getStoreJson } from '../util/config';
 type Props = {}
+interface DataType {
+  id: number;
+  tenViTri: string;
+  tinhThanh: string;
+  quocGia: string;
+  hinhAnh: string;
+}
 
 const QuanLyViTri = (props: Props) => {
   const { userProfile } = useSelector((state: RootState) => state.userReducer);
+  const dispatch: dispatchType = useDispatch();
+  const columns: ColumnsType<DataType> = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      align: "center",
+      fixed: "left",
+    },
+    {
+      title: 'Tên vị trí',
+      dataIndex: 'tenViTri',
+      align: "center",
+      fixed: "left",
+    },
+    {
+      title: 'Tỉnh Thành',
+      dataIndex: 'tinhThanh',
+      align: "center",
+      fixed: "left",
+    },
+    {
+      title: 'Quốc Gía',
+      dataIndex: 'quocGia',
+      align: "center",
+      fixed: "left",
+    },
+    {
+      title: 'Hình ảnh',
+
+      align: "center",
+      dataIndex: 'hinhAnh',
+      render: (_, record) => {
+        return <img
+          src={record.hinhAnh ? record.hinhAnh : "https://a0.muscache.com/defaults/user_pic-50x50.png?v=3"}
+          alt="Foto Perfil"
+          className="rounded-sm  h-20  w-20"
+        />
+      },
+      fixed: "left",
+    },
+
+    {
+      title: "Chức năng",
+      dataIndex: "chucNang",
+      align: "center",
+      fixed: "left",
+      render: (_, record) => (
+        <Space size="middle">
+
+          <button
+            className="p-3 bg-green-300 mx-3 my-3 rounded-md hover:bg-green-500"
+          // onClick={async () => {
+          //   let res = await httpNonAuth.get(`/api/phong-thue/${record.id}`);
+          //   setRoom(res.data.content);
+          //   setDisabled(false);
+          //   setOpen(true);
+          //   setTitle("Sửa thông tin phòng thuê");
+          // }}
+          >
+            Sửa
+          </button>
+          <button
+            className="p-3 bg-red-300 mx-3 my-3 rounded-md hover:bg-red-500"
+            onClick={() => {
+              // deleteUser(record.id);
+            }}
+          >
+            Xoá
+          </button>
+        </Space>
+      ),
+    },
+  ];
   if (userProfile?.role != "ADMIN") {
     Swal.fire({
       icon: "warning",
       text: `Vui lòng đăng nhập bằng tài khoản Admin để tiếp tuc`,
       confirmButtonText: "OK"
     }).then((res) => {
-      if (res['isConfirmed']){
+      if (res['isConfirmed']) {
         history.push('/dang-nhap');
       }
     });
   }
+  let data: DataType[] = [];
+
+  if (getStoreJson("location")) {
+    data = [...getStoreJson("location")];
+
+  }
   return (
     <div>
-    <div className="relative max-w-md w-full">
-      <div className="absolute top-1 left-2 inline-flex items-center p-2">
-        <i className="fas fa-search text-gray-400" />
-      </div>
-      <input
-        className="w-full h-10 pl-10 pr-4 py-1 text-base placeholder-gray-500 border rounded-full focus:shadow-outline"
-        type="search"
-        placeholder="Tìm..."
-      />
-    </div>
-    <div className="mt-8 bg-white p-4 shadow rounded-lg">
-      <h2 className="text-gray-500 text-lg font-semibold pb-4">
-        Thông tin người dùng
-      </h2>
+      <div className="relative max-w-md w-full">
+        <div className="absolute top-1 left-2 inline-flex items-center p-2">
+          <i className="fas fa-search text-gray-400" />
+        </div>
+        <input
+          className="w-full h-10 pl-10 pr-4 py-1 text-base placeholder-gray-500 border rounded-full focus:shadow-outline"
+          type="search"
+          placeholder="Tìm..."
+        />
 
-      <div className="bg-gradient-to-r from-cyan-300 to-cyan-500 h-px mb-6" />
-      <table className="w-full table-auto text-sm">
-        <thead>
-          <tr className="text-sm leading-normal">
-            <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-              Avatar
-            </th>
-            <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-              Mã người dùng
-            </th>
-            <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-              Tên
-            </th>
-            <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-              Role
-            </th>
-            <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-              Email
-            </th>
-            <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-              Số điện thoại
-            </th>
-            <th className="py-2 px-4 bg-grey-lightest font-bold uppercase text-sm text-grey-light border-b border-grey-light">
-              Ngày sinh
-            </th>
-          </tr>
-        </thead>
+      </div>
+      <table className="w-full table-auto text-sm mt-4">
         <tbody>
-          <tr className="hover:bg-grey-lighter">
-            <td className="py-2 px-4 border-b border-grey-light">
-              <img
-                src="https://via.placeholder.com/40"
-                alt="Foto Perfil"
-                className="rounded-full h-10 w-10"
-              />
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">
-              Juan Pérez
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">Comercio</td>
-          </tr>
-          {/* Añade más filas aquí como la anterior para cada autorización pendiente */}
-          <tr className="hover:bg-grey-lighter">
-            <td className="py-2 px-4 border-b border-grey-light">
-              <img
-                src="https://via.placeholder.com/40"
-                alt="Foto Perfil"
-                className="rounded-full h-10 w-10"
-              />
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">
-              María Gómez
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">Usuario</td>
-          </tr>
-          <tr className="hover:bg-grey-lighter">
-            <td className="py-2 px-4 border-b border-grey-light">
-              <img
-                src="https://via.placeholder.com/40"
-                alt="Foto Perfil"
-                className="rounded-full h-10 w-10"
-              />
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">
-              Carlos López
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">Usuario</td>
-          </tr>
-          <tr className="hover:bg-grey-lighter">
-            <td className="py-2 px-4 border-b border-grey-light">
-              <img
-                src="https://via.placeholder.com/40"
-                alt="Foto Perfil"
-                className="rounded-full h-10 w-10"
-              />
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">
-              Laura Torres
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">Comercio</td>
-          </tr>
-          <tr className="hover:bg-grey-lighter">
-            <td className="py-2 px-4 border-b border-grey-light">
-              <img
-                src="https://via.placeholder.com/40"
-                alt="Foto Perfil"
-                className="rounded-full h-10 w-10"
-              />
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">
-              Ana Ramírez
-            </td>
-            <td className="py-2 px-4 border-b border-grey-light">Usuario</td>
-          </tr>
+          <Table
+            columns={columns}
+            dataSource={data}
+
+            bordered
+          />
         </tbody>
       </table>
-      {/* Botón "Ver más" para la tabla de Autorizaciones Pendientes */}
-      <div className="text-right mt-4">
-        <button className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-4 rounded">
-          Thêm quản trị viên
-        </button>
-      </div>
     </div>
-  </div>
   )
 }
 

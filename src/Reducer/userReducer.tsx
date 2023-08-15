@@ -17,6 +17,7 @@ import Swal from "sweetalert2";
 import { formUpdate } from "../Layout/UpdateProfile";
 import { formProfile } from "../Pages/Profile";
 import axios from "axios";
+import { Toast } from "./locationReducer";
 
 
 
@@ -36,7 +37,7 @@ interface UserRegister {
   role: string;
 }
 
-interface UserProfile {
+export interface UserProfile {
   id: number;
   name: string;
   email: string;
@@ -68,6 +69,7 @@ interface UserState {
   userLogin: UserLogin | null | undefined;
   userRegister: UserRegister | null | undefined;
   userProfile: UserProfile | null | undefined;
+  allProfile: UserProfile[] | null;
   userUpdate: UserUpdate | null | undefined;
   userAvatar: UserProfile | null | undefined;
   userRoom: UserRoom[] | null
@@ -77,9 +79,10 @@ const initialState: UserState = {
   userRegister: null,
   userLogin: getStoreJson(USER_LOGIN) || null,
   userProfile: getStoreJson(USER_PROFILE) || null,
+  allProfile: null,
   userUpdate: null,
   userAvatar: null,
-  userRoom: null
+  userRoom: null,
 };
 
 const userReducer = createSlice({
@@ -95,6 +98,9 @@ const userReducer = createSlice({
     profileAction: (state: UserState, action: PayloadAction<UserProfile>) => {
       state.userProfile = action.payload;
     },
+    allProfileAction: (state: UserState, action: PayloadAction<UserProfile[]>) => {
+      state.allProfile = action.payload;
+    },
     updateProfileAction: (state: UserState, action: PayloadAction<UserUpdate>) => {
       state.userUpdate = action.payload;
     },
@@ -107,7 +113,7 @@ const userReducer = createSlice({
   },
 });
 
-export const { loginAction, signUpAction, profileAction, updateProfileAction, updateAvatarAction, getRoomByUserAction } = userReducer.actions;
+export const { loginAction, signUpAction, profileAction, updateProfileAction, updateAvatarAction, getRoomByUserAction, allProfileAction } = userReducer.actions;
 
 export default userReducer.reducer;
 
@@ -151,10 +157,22 @@ export const getProfileApi = (id: number) => {
     let res = await httpNonAuth.get(`/api/users/${id}`);
     if (res) {
       console.log(res.data)
-      setStoreJson(USER_PROFILE, res.data.content);
       const action: PayloadAction<UserProfile> = profileAction(res.data.content);
       dispatch(action);
 
+    }
+  }
+}
+
+export const getAllProfileApi = () => {
+
+  return async (dispatch: dispatchType) => {
+    let res = await http.get(`/api/users`);
+    if (res) {
+      console.log(res.data)
+      setStoreJson("listUser", res.data.content);
+      const action: PayloadAction<UserProfile[]> = allProfileAction(res.data.content);
+      dispatch(action);
     }
   }
 }
@@ -211,6 +229,22 @@ export const getRoomByUserApi = (userId: any) => {
       const action: PayloadAction<UserRoom[]> = getRoomByUserAction(res.data.content);
       dispatch(action);
 
+    }
+  }
+}
+
+export const deleteUserById = (id: number) => {
+  return async (dispatch: dispatchType) => {
+    const res = await http.delete(`/api/users/${id}`)
+    if (res) {
+      Toast.fire({
+        icon: "success",
+        title: "Xoá người dùng thành công",
+      });
+      const newUser = await httpNonAuth.get(`/api/users`);
+      setStoreJson(USER_PROFILE, res.data.content);
+      const action: PayloadAction<UserProfile[]> = allProfileAction(res.data.content);
+      dispatch(action);
     }
   }
 }
