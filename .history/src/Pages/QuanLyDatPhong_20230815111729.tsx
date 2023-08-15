@@ -174,6 +174,8 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
   };
   const onChangeNgayDen: DatePickerProps["onChange"] = (date) => {
     console.log(date);
+    console.log(dayjs.unix(date));
+
     console.log(JSON.parse(JSON.stringify(date)));
   };
 

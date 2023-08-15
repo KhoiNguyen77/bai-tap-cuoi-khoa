@@ -45,6 +45,8 @@ const ChiTietPhong = (props: Props) => {
   const [ngayDen, setNgayDen] = useState<any>(null);
   const [ngayDi, setNgayDi] = useState<any>(null);
   const onChangeNgayDen: DatePickerProps["onChange"] = (date) => {
+    console.log(date);
+    JSON.parse(JSON.stringify(date));
     setNgayDen(date);
   };
 

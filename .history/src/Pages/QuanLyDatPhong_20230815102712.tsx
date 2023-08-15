@@ -48,7 +48,15 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
       convertStringNgayDi.getMonth() + 1
     }/${convertStringNgayDi.getFullYear()}`;
   });
+  const convertDate = (date: any) => {
+    let newDate = new Date(date);
+    let returnDate = `${newDate.getDate()}/${
+      newDate.getMonth() - 1
+    }/${newDate.getFullYear()}`;
+    console.log(dayjs(date));
 
+    return returnDate;
+  };
   useEffect(() => {
     getBooking();
   }, []);
@@ -125,6 +133,7 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
             className="p-3 bg-blue-300 mx-3 my-3 rounded-md hover:bg-blue-500"
             onClick={async () => {
               let res = await httpNonAuth.get(`/api/dat-phong/${record.id}`);
+              console.log(res.data.content);
               setBooking(res.data.content);
               setDisabled(true);
               setOpen(true);
@@ -157,10 +166,21 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
       ),
     },
   ];
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("Thông tin phòng thuê");
   const [booking, setBooking] = useState<DataType>();
+  const dateFormat = "DD/MM/YYYY";
+  const start = () => {
+    setLoading(true);
+    // ajax request after empty completing
+    setTimeout(() => {
+      setSelectedRowKeys([]);
+      setLoading(false);
+    }, 1000);
+  };
   const handleCancel = () => {
     setOpen(false);
   };
@@ -172,22 +192,21 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
       [name]: value,
     }));
   };
+  const [ngayDen, setNgayDen] = useState<any>(null);
+  const [ngayDi, setNgayDi] = useState<any>(null);
   const onChangeNgayDen: DatePickerProps["onChange"] = (date) => {
-    console.log(date);
-    console.log(JSON.parse(JSON.stringify(date)));
+    setNgayDen(date);
   };
 
   const onChangeNgayDi: DatePickerProps["onChange"] = (date) => {
-    setBooking((prev: any) => ({
-      ...prev,
-      ngayDi: JSON.parse(JSON.stringify(date)),
-    }));
+    setNgayDi(date);
   };
   const onSubmit = async (values: any) => {
     let dataBack: any = { ...booking };
     const action: any = await updateBookingById(dataBack);
     dispatch(action);
     setOpen(false);
+    data = getStoreJson("rooms");
   };
   return (
     <div>

@@ -3,24 +3,11 @@ import { RootState } from "../Reducer/configStore";
 import Swal from "sweetalert2";
 import { history } from "../index";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteBookingById,
-  getBookingList,
-  updateBookingById,
-} from "../Reducer/locationReducer";
-import {
-  Button,
-  Table,
-  Space,
-  Radio,
-  Modal,
-  DatePicker,
-  DatePickerProps,
-} from "antd";
+import { deleteBookingById, getBookingList } from "../Reducer/locationReducer";
+import { Button, Table, Space, Radio, Modal, DatePicker } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { getStoreJson, httpNonAuth } from "../util/config";
 import dayjs from "dayjs";
-import { useForm } from "react-hook-form";
 
 type Props = {};
 
@@ -42,13 +29,12 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
     const convertStringNgayDen = new Date(row.ngayDen);
     const convertStringNgayDi = new Date(row.ngayDi);
     row.ngayDen = `${convertStringNgayDen.getDate()}/${
-      convertStringNgayDen.getMonth() + 1
+      convertStringNgayDen.getMonth() - 1
     }/${convertStringNgayDen.getFullYear()}`;
     row.ngayDi = `${convertStringNgayDi.getDate()}/${
-      convertStringNgayDi.getMonth() + 1
+      convertStringNgayDi.getMonth() - 1
     }/${convertStringNgayDi.getFullYear()}`;
   });
-
   useEffect(() => {
     getBooking();
   }, []);
@@ -77,6 +63,7 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
     const action: any = await deleteBookingById(id);
     dispatch(action);
   };
+
   const columns: ColumnsType<DataType> = [
     {
       title: "ID",
@@ -157,37 +144,31 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
       ),
     },
   ];
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("Thông tin phòng thuê");
   const [booking, setBooking] = useState<DataType>();
+  const dateFormat = "DD/MM/YYYY";
+  const start = () => {
+    setLoading(true);
+    // ajax request after empty completing
+    setTimeout(() => {
+      setSelectedRowKeys([]);
+      setLoading(false);
+    }, 1000);
+  };
   const handleCancel = () => {
     setOpen(false);
   };
-  const { register, handleSubmit } = useForm();
+
   const handleChange = (e: any) => {
     let { name, value } = e.target;
     setBooking((prev: any) => ({
       ...prev,
       [name]: value,
     }));
-  };
-  const onChangeNgayDen: DatePickerProps["onChange"] = (date) => {
-    console.log(date);
-    console.log(JSON.parse(JSON.stringify(date)));
-  };
-
-  const onChangeNgayDi: DatePickerProps["onChange"] = (date) => {
-    setBooking((prev: any) => ({
-      ...prev,
-      ngayDi: JSON.parse(JSON.stringify(date)),
-    }));
-  };
-  const onSubmit = async (values: any) => {
-    let dataBack: any = { ...booking };
-    const action: any = await updateBookingById(dataBack);
-    dispatch(action);
-    setOpen(false);
   };
   return (
     <div>
@@ -219,7 +200,7 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
             onCancel={handleCancel}
             width={1000}
           >
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form>
               <div className="container mx-auto grid sm:grid-cols-2 gap-4 mt-9">
                 <div className="mb-4 w-full">
                   <div className="mb-3">
@@ -229,12 +210,11 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
                     <input
                       className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
-                      id="maPhong"
-                      name="maPhong"
+                      id="id"
+                      name="id"
                       type="text"
                       value={booking?.maPhong}
-                      disabled
-                      onChange={handleChange}
+                      disabled={disabled}
                     />
                   </div>
 
@@ -246,12 +226,10 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
                     <input
                       className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
-                      id="soLuongKhach"
-                      name="soLuongKhach"
+                      id="phongNgu"
                       type="number"
                       value={booking?.soLuongKhach}
                       disabled={disabled}
-                      onChange={handleChange}
                     />
                   </div>
                   <div className="mb-3">
@@ -262,12 +240,10 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
                     <input
                       className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
-                      id="maNguoiDung"
+                      id="giuong"
                       type="number"
-                      name="maNguoiDung"
                       value={booking?.maNguoiDung}
-                      disabled
-                      onChange={handleChange}
+                      disabled={disabled}
                     />
                   </div>
                 </div>
@@ -277,15 +253,14 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
                       Ngày đến
                     </label>
                     <DatePicker
-                      value={dayjs(booking?.ngayDen)}
+                      defaultValue={dayjs(booking?.ngayDen, "MM/DD/YYYY")}
                       style={{ width: 200 }}
                       placeholder="dd/MM/YYYY"
                       bordered={true}
                       format={"DD/MM/YYYY"}
                       className="inline-block p-3 w-full mx-auto"
                       disabled={disabled}
-                      {...register("ngayDen")}
-                      onChange={onChangeNgayDen}
+                      // onChange={onChangeNgayDen}
                     />
                   </div>
                   <div className="mb-3">
@@ -294,15 +269,14 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
                     </label>
 
                     <DatePicker
-                      value={dayjs(booking?.ngayDi)}
+                      defaultValue={dayjs(booking?.ngayDi, "DD/MM/YYYY")}
                       style={{ width: 200 }}
                       placeholder="dd/MM/YYYY"
                       bordered={true}
                       format={"DD/MM/YYYY"}
                       className="inline-block p-3 w-full mx-auto"
                       disabled={disabled}
-                      {...register("ngayDi")}
-                      onChange={onChangeNgayDi}
+                      // onChange={onChangeNgayDi}
                     />
                   </div>
                 </div>

@@ -273,18 +273,3 @@ export const updateRoomById = (data: any) => {
     }
   };
 };
-
-export const updateBookingById = (data: any) => {
-  return async (dispatch: dispatchType) => {
-    const res = await http.put(`/api/dat-phong/${data.id}`, data);
-    if (res) {
-      Swal.fire({
-        icon: "success",
-        text: "Cập nhật thông tin đặt phòng thành công",
-      });
-      const newBookingList = await httpNonAuth.get("api/dat-phong");
-      setStoreJson("bookingList", newBookingList.data.content);
-      dispatch(getBookingAction(newBookingList.data.content));
-    }
-  };
-};

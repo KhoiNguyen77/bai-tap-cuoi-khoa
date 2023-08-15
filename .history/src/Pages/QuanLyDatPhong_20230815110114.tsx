@@ -173,14 +173,16 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
     }));
   };
   const onChangeNgayDen: DatePickerProps["onChange"] = (date) => {
-    console.log(date);
-    console.log(JSON.parse(JSON.stringify(date)));
+    setBooking((prev: any) => ({
+      ...prev,
+      ngayDen: date,
+    }));
   };
 
   const onChangeNgayDi: DatePickerProps["onChange"] = (date) => {
     setBooking((prev: any) => ({
       ...prev,
-      ngayDi: JSON.parse(JSON.stringify(date)),
+      ngayDi: date,
     }));
   };
   const onSubmit = async (values: any) => {

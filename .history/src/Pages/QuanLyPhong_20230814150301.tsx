@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Reducer/configStore";
-import {
-  Room,
-  deleteRoomById,
-  getRoomAPI,
-  updateRoomById,
-} from "../Reducer/locationReducer";
-import { Modal, Radio, Space, Table } from "antd";
+import { Room, deleteRoomById, getRoomAPI } from "../Reducer/locationReducer";
+import { Button, Modal, Radio, Space, Table } from "antd";
 import Swal from "sweetalert2";
 import { history } from "../index";
 import { ColumnsType } from "antd/es/table";
 import { getStoreJson, httpNonAuth } from "../util/config";
-import { useForm } from "react-hook-form";
 
 type Props = {};
 interface DataType {
@@ -36,11 +30,8 @@ interface DataType {
   maViTri: number;
   hinhAnh: string;
 }
-let data: DataType[] = [];
-const QuanLyPhong: React.FC = (props: Props) => {
-  if (getStoreJson("rooms")) {
-    data = [...getStoreJson("rooms")];
-  }
+
+const QuanLyPhong = (props: Props) => {
   const { userProfile } = useSelector((state: RootState) => state.userReducer);
   if (userProfile?.role != "ADMIN") {
     Swal.fire({
@@ -57,27 +48,33 @@ const QuanLyPhong: React.FC = (props: Props) => {
   const [room, setRoom] = useState<DataType>();
   const [title, setTitle] = useState("Thông tin phòng thuê");
   const [open, setOpen] = useState(false);
+  const [id, setId] = useState(0);
   const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const getRoom = async () => {
     const action: any = await getRoomAPI();
     dispatch(action);
   };
+
+  const handleOk = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setOpen(false);
+    }, 3000);
+  };
   const handleCancel = () => {
     setOpen(false);
   };
   const handleChange = (e: any) => {
-    let { name, value } = e.target;
-    setRoom((prev: any) => ({
-      ...prev,
-      [name]: value,
-    }));
+    const {name, value} = e.target
+    console.log(e.target.value);
   };
   const deleteRoom = async (id: number) => {
     const action: any = await deleteRoomById(id);
     dispatch(action);
   };
-
   const columns: ColumnsType<DataType> = [
     {
       title: "Mã phòng",
@@ -149,19 +146,13 @@ const QuanLyPhong: React.FC = (props: Props) => {
       ),
     },
   ];
-
-  const { register, handleSubmit } = useForm();
-  const onSubmit = async (values: any) => {
-    let dataBack: any = { ...room };
-    const action: any = await updateRoomById(dataBack);
-    dispatch(action);
-    setOpen(false);
-  };
-
+  let data: DataType[] = [];
+  if (getStoreJson("rooms")) {
+    data = [...getStoreJson("rooms")];
+  }
   useEffect(() => {
     getRoom();
   }, []);
-
   return (
     <div>
       <div className="relative max-w-md w-full"></div>
@@ -196,7 +187,7 @@ const QuanLyPhong: React.FC = (props: Props) => {
           onCancel={handleCancel}
           width={1000}
         >
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form>
             <div className="container mx-auto grid sm:grid-cols-2 gap-4 mt-9">
               <div className="mb-4 w-full">
                 <div className="mb-3">
@@ -206,12 +197,12 @@ const QuanLyPhong: React.FC = (props: Props) => {
                   <input
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
-                    id="maPhong"
+                    id="id"
+                    name="id"
                     type="text"
                     value={room?.id}
-                    {...register("id")}
-                    onChange={handleChange}
-                    disabled
+                    disabled={disabled}
+
                   />
                 </div>
                 <div className="mb-3">
@@ -222,7 +213,7 @@ const QuanLyPhong: React.FC = (props: Props) => {
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
                     id="tenPhong"
-                    {...register("tenPhong")}
+                    name='tenPhong'
                     type="text"
                     value={room?.tenPhong}
                     disabled={disabled}
@@ -238,10 +229,8 @@ const QuanLyPhong: React.FC = (props: Props) => {
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
                     id="khach"
-                    {...register("khach")}
                     value={room?.khach}
                     disabled={disabled}
-                    onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -253,11 +242,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
                     id="phongNgu"
-                    {...register("phongNgu")}
                     type="number"
                     value={room?.phongNgu}
                     disabled={disabled}
-                    onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -269,11 +256,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
                     id="giuong"
-                    {...register("giuong")}
                     type="number"
                     value={room?.giuong}
                     disabled={disabled}
-                    onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -285,11 +270,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
                     id="phongTam"
-                    {...register("phongTam")}
                     type="number"
                     value={room?.phongTam}
                     disabled={disabled}
-                    onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -301,11 +284,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
                     id="moTa"
-                    {...register("moTa")}
                     type="text"
                     value={room?.moTa}
                     disabled={disabled}
-                    onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -317,11 +298,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
                     id="giaTien"
-                    {...register("giaTien")}
                     type="number"
                     value={room?.giaTien}
                     disabled={disabled}
-                    onChange={handleChange}
                   />
                 </div>
                 <div className="mb-3">
@@ -332,10 +311,8 @@ const QuanLyPhong: React.FC = (props: Props) => {
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
                     type="file"
-                    {...register("hinhAnh")}
                     id="hinhAnh"
                     disabled={disabled}
-                    onChange={handleChange}
                   />
                   <img src={room?.hinhAnh} width={500} alt="" />
                 </div>
@@ -348,10 +325,8 @@ const QuanLyPhong: React.FC = (props: Props) => {
                     className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
                  "
                     id="maViTri"
-                    {...register("maViTri")}
                     value={room?.maViTri}
                     disabled={disabled}
-                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -363,10 +338,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
 
                   <Radio.Group
                     id="mayGiat"
-                    {...register("mayGiat")}
+                    name="mayGiat"
                     value={room?.mayGiat}
                     disabled={disabled}
-                    onChange={handleChange}
                   >
                     <Radio value={true} id="yes" className="mr-20">
                       Có
@@ -383,10 +357,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
 
                   <Radio.Group
                     id="banLa"
-                    {...register("banLa")}
+                    name="banLa"
                     value={room?.banLa}
                     disabled={disabled}
-                    onChange={handleChange}
                   >
                     <Radio value={true} id="yes" className="mr-20">
                       Có
@@ -403,10 +376,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
 
                   <Radio.Group
                     id="tivi"
-                    {...register("tivi")}
+                    name="tivi"
                     value={room?.tivi}
                     disabled={disabled}
-                    onChange={handleChange}
                   >
                     <Radio value={true} id="yes" className="mr-20">
                       Có
@@ -423,10 +395,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
 
                   <Radio.Group
                     id="dieuHoa"
-                    {...register("dieuHoa")}
+                    name="dieuHoa"
                     value={room?.dieuHoa}
                     disabled={disabled}
-                    onChange={handleChange}
                   >
                     <Radio value={true} id="yes" className="mr-20">
                       Có
@@ -443,10 +414,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
 
                   <Radio.Group
                     id="wifi"
-                    {...register("wifi")}
+                    name="wifi"
                     value={room?.wifi}
                     disabled={disabled}
-                    onChange={handleChange}
                   >
                     <Radio value={true} id="yes" className="mr-20">
                       Có
@@ -463,10 +433,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
 
                   <Radio.Group
                     id="bep"
-                    {...register("bep")}
+                    name="bep"
                     value={room?.bep}
                     disabled={disabled}
-                    onChange={handleChange}
                   >
                     <Radio value={true} id="yes" className="mr-20">
                       Có
@@ -483,10 +452,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
 
                   <Radio.Group
                     id="doXe"
-                    {...register("doXe")}
+                    name="doXe"
                     value={room?.doXe}
                     disabled={disabled}
-                    onChange={handleChange}
                   >
                     <Radio value={true} id="yes" className="mr-20">
                       Có
@@ -503,10 +471,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
 
                   <Radio.Group
                     id="hoBoi"
-                    {...register("hoBoi")}
+                    name="hoBoi"
                     value={room?.hoBoi}
                     disabled={disabled}
-                    onChange={handleChange}
                   >
                     <Radio value={true} id="yes" className="mr-20">
                       Có
@@ -523,10 +490,9 @@ const QuanLyPhong: React.FC = (props: Props) => {
 
                   <Radio.Group
                     id="banUi"
-                    {...register("banUi")}
+                    name="banUi"
                     value={room?.banUi}
                     disabled={disabled}
-                    onChange={handleChange}
                   >
                     <Radio value={true} id="yes" className="mr-20">
                       Có

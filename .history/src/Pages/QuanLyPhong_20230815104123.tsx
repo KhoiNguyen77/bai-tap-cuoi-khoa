@@ -7,7 +7,7 @@ import {
   getRoomAPI,
   updateRoomById,
 } from "../Reducer/locationReducer";
-import { Modal, Radio, Space, Table } from "antd";
+import { Button, Modal, Radio, Space, Table } from "antd";
 import Swal from "sweetalert2";
 import { history } from "../index";
 import { ColumnsType } from "antd/es/table";
@@ -157,7 +157,7 @@ const QuanLyPhong: React.FC = (props: Props) => {
     dispatch(action);
     setOpen(false);
   };
-
+  
   useEffect(() => {
     getRoom();
   }, []);
@@ -178,7 +178,7 @@ const QuanLyPhong: React.FC = (props: Props) => {
           <tbody>
             <Table
               columns={columns}
-              dataSource={data}
+              dataSource={getStoreJson("rooms")}
               scroll={{ y: 500 }}
               bordered
             />

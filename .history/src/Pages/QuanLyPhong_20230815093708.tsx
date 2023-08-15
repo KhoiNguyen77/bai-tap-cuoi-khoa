@@ -7,7 +7,7 @@ import {
   getRoomAPI,
   updateRoomById,
 } from "../Reducer/locationReducer";
-import { Modal, Radio, Space, Table } from "antd";
+import { Button, Modal, Radio, Space, Table } from "antd";
 import Swal from "sweetalert2";
 import { history } from "../index";
 import { ColumnsType } from "antd/es/table";
@@ -36,11 +36,8 @@ interface DataType {
   maViTri: number;
   hinhAnh: string;
 }
-let data: DataType[] = [];
-const QuanLyPhong: React.FC = (props: Props) => {
-  if (getStoreJson("rooms")) {
-    data = [...getStoreJson("rooms")];
-  }
+
+const QuanLyPhong = (props: Props) => {
   const { userProfile } = useSelector((state: RootState) => state.userReducer);
   if (userProfile?.role != "ADMIN") {
     Swal.fire({
@@ -149,15 +146,20 @@ const QuanLyPhong: React.FC = (props: Props) => {
       ),
     },
   ];
-
+  let data: DataType[] = [];
+  if (getStoreJson("rooms")) {
+    data = [...getStoreJson("rooms")];
+  }
   const { register, handleSubmit } = useForm();
   const onSubmit = async (values: any) => {
     let dataBack: any = { ...room };
     const action: any = await updateRoomById(dataBack);
     dispatch(action);
     setOpen(false);
+    if (getStoreJson("rooms")) {
+      data = [...getStoreJson("rooms")];
+    }
   };
-
   useEffect(() => {
     getRoom();
   }, []);

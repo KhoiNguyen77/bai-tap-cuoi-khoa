@@ -64,9 +64,6 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
       }
     });
   }
-  const { bookingList } = useSelector(
-    (state: RootState) => state.locationReducer
-  );
   const dispatch = useDispatch();
   const getBooking = async () => {
     const action: any = await getBookingList();
@@ -125,6 +122,7 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
             className="p-3 bg-blue-300 mx-3 my-3 rounded-md hover:bg-blue-500"
             onClick={async () => {
               let res = await httpNonAuth.get(`/api/dat-phong/${record.id}`);
+              console.log(res.data.content);
               setBooking(res.data.content);
               setDisabled(true);
               setOpen(true);
@@ -172,16 +170,14 @@ const QuanLyDatPhong: React.FC = (props: Props) => {
       [name]: value,
     }));
   };
+  const [ngayDen, setNgayDen] = useState<any>(null);
+  const [ngayDi, setNgayDi] = useState<any>(null);
   const onChangeNgayDen: DatePickerProps["onChange"] = (date) => {
-    console.log(date);
-    console.log(JSON.parse(JSON.stringify(date)));
+    setNgayDen(date);
   };
 
   const onChangeNgayDi: DatePickerProps["onChange"] = (date) => {
-    setBooking((prev: any) => ({
-      ...prev,
-      ngayDi: JSON.parse(JSON.stringify(date)),
-    }));
+    setNgayDi(date);
   };
   const onSubmit = async (values: any) => {
     let dataBack: any = { ...booking };
